@@ -181,7 +181,7 @@
         // =========================================================================
         // KONFIGURASI FIREBASE APLIKASI
         // =========================================================================
-        const IS_PREVIEW = false; // GANTI JADI false JIKA FIREBASE SUDAH DISIAPKAN BAWAH INI
+        const IS_PREVIEW = true; // GANTI JADI false JIKA FIREBASE SUDAH DISIAPKAN BAWAH INI
         
           const firebaseConfig = {
     apiKey: "AIzaSyCMT8Jw5StNajXE6ua3UZTdGklCTFb7n34",
@@ -1212,7 +1212,6 @@
                 } else { guruInfoNama = "Semua Guru"; guruInfoNip = "-"; }
             }
 
-            const printWin = window.open('', '_blank');
             const sortedData = [...dataToPrint].sort((a, b) => {
                 const dA = new Date(a.tanggal), dB = new Date(b.tanggal);
                 if (dA < dB) return -1; if (dA > dB) return 1;
@@ -1260,8 +1259,37 @@
 
             let footerHTML = isKepsekFormat ? `<table><tr><td style="text-align: left !important; padding-left: 5%;">Mengetahui<br>Pengawas<br><br><br><br><br>.......................................................<br>NIP.</td><td style="text-align: left !important; padding-left: 15%;">Dawan, ${new Date().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}<br>Kepala SMP Negeri 1 Dawan<br><br><br><br><br>${kepsek.nama}<br>NIP. ${kepsek.nip}</td></tr></table>` : `<table><tr><td>Mengetahui,<br>Kepala SMP Negeri 1 Dawan<br><br><br><br><br><b><u>${kepsek.nama}</u></b><br>NIP. ${kepsek.nip}</td><td>Dawan, ${new Date().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}<br>Guru Mata Pelajaran<br><br><br><br><br><b><u>${guruInfoNama}</u></b><br>${guruInfoNip !== '-' ? 'NIP. ' + guruInfoNip : ''}</td></tr></table>`;
 
-            printWin.document.write(`<html><head><title>Cetak Laporan Jurnal</title><style>@page { size: A4 portrait; margin: 1cm; } body { font-family: 'Times New Roman', serif; font-size: 10pt; line-height: 1.3; color: black; } .kop { text-align: center; margin-bottom: 15px; width: 100%; } .kop img { width: 100%; height: auto; display: block; object-fit: contain; } h2 { text-align: center; text-transform: uppercase; margin: 10px 0 25px 0; font-size: 14pt; font-weight: bold;} table.data { width: 100%; border-collapse: collapse; margin-top: 10px; } table.data th, table.data td { border: 1px solid black; padding: 5px; text-align: left; vertical-align: middle; } table.data th { text-align: center !important; font-weight: bold; background-color: #dae8f5; } .bg-istirahat { text-align: center !important; vertical-align: middle !important; font-weight: bold; font-style: italic; } .center { text-align: center !important; vertical-align: middle !important; } .footer { margin-top: 30px; width: 100%; page-break-inside: avoid; } .footer table { border: none !important; width: 100%; } .footer td { border: none !important; width: 50%; padding-top: 10px; text-align: center !important; vertical-align: top !important; } img.doc { max-width: 100px; max-height: 100px; object-fit: cover; border-radius: 4px; border: 1px solid #ccc; display: block; margin: 0 auto; }</style></head><body><div class="kop"><img src="${PRINT_KOP}" alt="KOP SURAT DINAS"></div><h2>JURNAL KEGIATAN BELAJAR MENGAJAR</h2><table class="data"><thead>${tableHeader}</thead><tbody>${tableRows}</tbody></table><div class="footer">${footerHTML}</div><script>setTimeout(() => window.print(), 500);<\/script></body></html>`);
-            printWin.document.close();
+            const htmlString = `<html><head><title>Cetak Laporan Jurnal</title><style>@page { size: A4 portrait; margin: 1cm; } body { font-family: 'Times New Roman', serif; font-size: 10pt; line-height: 1.3; color: black; } .kop { text-align: center; margin-bottom: 15px; width: 100%; } .kop img { width: 100%; height: auto; display: block; object-fit: contain; } h2 { text-align: center; text-transform: uppercase; margin: 10px 0 25px 0; font-size: 14pt; font-weight: bold;} table.data { width: 100%; border-collapse: collapse; margin-top: 10px; } table.data th, table.data td { border: 1px solid black; padding: 5px; text-align: left; vertical-align: middle; } table.data th { text-align: center !important; font-weight: bold; background-color: #dae8f5; } .bg-istirahat { text-align: center !important; vertical-align: middle !important; font-weight: bold; font-style: italic; } .center { text-align: center !important; vertical-align: middle !important; } .footer { margin-top: 30px; width: 100%; page-break-inside: avoid; } .footer table { border: none !important; width: 100%; } .footer td { border: none !important; width: 50%; padding-top: 10px; text-align: center !important; vertical-align: top !important; } img.doc { max-width: 100px; max-height: 100px; object-fit: cover; border-radius: 4px; border: 1px solid #ccc; display: block; margin: 0 auto; }</style></head><body><div class="kop"><img src="${PRINT_KOP}" alt="KOP SURAT DINAS"></div><h2>JURNAL KEGIATAN BELAJAR MENGAJAR</h2><table class="data"><thead>${tableHeader}</thead><tbody>${tableRows}</tbody></table><div class="footer">${footerHTML}</div></body></html>`;
+
+            // PERBAIKAN: Gunakan Hidden Iframe agar tidak di-block oleh Browser
+            let iframe = document.getElementById('print-iframe');
+            if (iframe) {
+                iframe.remove(); // Bersihkan iframe cetak sebelumnya
+            }
+            
+            iframe = document.createElement('iframe');
+            iframe.id = 'print-iframe';
+            // Sembunyikan iframe dari tampilan namun tetap ada di DOM
+            iframe.style.position = 'fixed';
+            iframe.style.right = '0';
+            iframe.style.bottom = '0';
+            iframe.style.width = '0';
+            iframe.style.height = '0';
+            iframe.style.border = '0';
+            document.body.appendChild(iframe);
+
+            const doc = iframe.contentWindow.document;
+            doc.open();
+            doc.write(htmlString);
+            doc.close();
+
+            // Tampilkan loading sebentar selagi gambar KOP Surat diunduh ke Iframe
+            showLoader(true);
+            setTimeout(() => {
+                showLoader(false);
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print(); // Memicu dialog Print bawaan sistem
+            }, 1000);
         }
 
         async function handleBulkDelete() {
@@ -1439,6 +1467,5 @@
         window.handleDeleteAllUsers = handleDeleteAllUsers;
 
     </script>
-    
 </body>
 </html>
