@@ -18,13 +18,12 @@
         
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc; /* Lighter Slate */
+            background-color: #f8fafc;
             user-select: none;
             color: #334155;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Glassmorphism for Login & Mobile Nav */
         .glass-morphism {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(16px);
@@ -33,7 +32,6 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
         }
 
-        /* Desktop Sidebar Active State */
         .sidebar-item-active {
             background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important;
             color: #ffffff !important;
@@ -43,7 +41,6 @@
         }
         .sidebar-item-active .icon-container { background-color: rgba(255, 255, 255, 0.2) !important; color: white !important; }
 
-        /* Mobile Bottom Nav Active State */
         .mobile-item-active .mobile-icon-wrap { transform: translateY(-14px); background-color: #4f46e5; border: 4px solid #f8fafc; color: white; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3); }
         .mobile-item-active .mobile-label { opacity: 1; transform: translateY(8px); color: #4f46e5; font-weight: 800; }
 
@@ -51,7 +48,6 @@
         .action-btn:active { transform: scale(0.96); }
         @media (min-width: 768px) { .action-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); } }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -63,28 +59,13 @@
             .print-area { width: 100%; margin: 0; padding: 0; }
         }
         
-        /* Safe area support for notch phones */
         .pb-safe { padding-bottom: env(safe-area-inset-bottom, 1rem); }
-        
-        /* Modern SweetAlert Animation */
-        div:where(.swal2-container) div:where(.swal2-popup) {
-            border-radius: 24px; padding: 1.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
-
-        /* Form Reset for iOS Safari zoom */
+        div:where(.swal2-container) div:where(.swal2-popup) { border-radius: 24px; padding: 1.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
         input[type="text"], input[type="password"], input[type="number"], input[type="date"], select, textarea { font-size: 16px !important; }
         input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15) !important; outline: none; border-color: #4f46e5 !important; }
     </style>
 </head>
 <body oncontextmenu="return false;">
-
-    <!-- KONFIGURASI APLIKASI -->
-    <script>
-        const IS_PREVIEW = true; // Canvas Mode
-        const GAS_URL = "URL_DEPLOY_GAS_ANDA_DISINI"; 
-        const APP_LOGO = "https://i.imghippo.com/files/hDT7953HB.png";
-        const PRINT_KOP = "https://i.imghippo.com/files/tuTX6225pKs.png";
-    </script>
 
     <!-- LOADING SPINNER -->
     <div id="loader" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-md hidden transition-opacity duration-300">
@@ -158,7 +139,6 @@
 
             <!-- 2. DESKTOP SIDEBAR -->
             <aside class="hidden md:flex w-[280px] bg-[#0f172a] shadow-[4px_0_24px_rgba(0,0,0,0.1)] h-full no-print flex-col z-40 border-r border-slate-800/80">
-                <!-- Profile Area -->
                 <div class="p-8 flex flex-col items-center border-b border-slate-800/60 relative overflow-hidden shrink-0">
                     <div class="absolute inset-0 bg-gradient-to-b from-slate-800/50 to-transparent"></div>
                     <div class="relative z-10 p-1 bg-white/10 rounded-full mb-4 backdrop-blur-sm shadow-inner">
@@ -168,10 +148,8 @@
                     <span id="user-role-badge" class="px-4 py-1 bg-indigo-500/20 text-indigo-300 text-[10px] uppercase font-bold rounded-lg mt-2 relative z-10 border border-indigo-500/30 tracking-widest">Role</span>
                 </div>
                 
-                <!-- Desktop Nav Menu -->
                 <nav class="p-5 flex flex-col gap-2 overflow-y-auto flex-1 custom-scroll" id="desktop-nav-menu"></nav>
 
-                <!-- Desktop Logout -->
                 <div class="p-5 border-t border-slate-800/60 shrink-0 bg-slate-900/50">
                     <button onclick="handleLogout()" class="w-full flex items-center justify-start space-x-4 p-4 text-slate-400 hover:bg-rose-500/10 hover:text-rose-400 rounded-2xl transition-all font-semibold group">
                         <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-800 group-hover:bg-rose-500/20 transition-colors shadow-inner">
@@ -189,15 +167,42 @@
 
             <!-- 4. MOBILE BOTTOM NAV (APP-LIKE) -->
             <nav class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-xl border-t border-slate-200/60 z-50 px-2 pt-2 pb-safe shadow-[0_-10px_40px_rgba(0,0,0,0.08)] no-print">
-                <div class="flex justify-around items-end h-[60px]" id="mobile-nav-menu">
-                    <!-- Injected via JS -->
-                </div>
+                <div class="flex justify-around items-end h-[60px]" id="mobile-nav-menu"></div>
             </nav>
         </div>
     </div>
 
-    <!-- SCRIPT LOGIC -->
-    <script>
+    <!-- FIREBASE & SCRIPT LOGIC (MODULE) -->
+    <script type="module">
+        // --- 1. FIREBASE IMPORTS ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc, getDoc, getDocs, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // =========================================================================
+        // KONFIGURASI FIREBASE APLIKASI
+        // =========================================================================
+        const IS_PREVIEW = false; // GANTI JADI false JIKA FIREBASE SUDAH DISIAPKAN BAWAH INI
+        
+          const firebaseConfig = {
+    apiKey: "AIzaSyCMT8Jw5StNajXE6ua3UZTdGklCTFb7n34",
+    authDomain: "sijari-spensada.firebaseapp.com",
+    projectId: "sijari-spensada",
+    storageBucket: "sijari-spensada.firebasestorage.app",
+    messagingSenderId: "747386072610",
+    appId: "1:747386072610:web:06e70bfaab11ce0199247b"
+  };
+        // =========================================================================
+
+        let db;
+        if (!IS_PREVIEW) {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+            } catch(e) {
+                console.error("Firebase Initialization Error:", e);
+            }
+        }
+
         // --- DATA STATE ---
         let currentUser = null;
         let journalsData = [];
@@ -219,9 +224,8 @@
         ];
 
         const dummyJournals = [
-            { id: '1001', tanggal: '2026-05-06', nip_user: 'peserta', nama_user: 'Guru Aktif, S.Pd', jam_mulai: '1', jam_selesai: '3', kelas: '7A', uraian: 'Mempelajari Aljabar Dasar untuk persiapan UTS', jml_hadir: 30, abs_sakit: 1, abs_ijin: 0, abs_alpha: 0, foto: '' },
-            { id: '1002', tanggal: '2026-05-06', nip_user: 'peserta', nama_user: 'Guru Aktif, S.Pd', jam_mulai: '4', jam_selesai: '5', kelas: '8B', uraian: 'Persamaan Linear Satu Variabel', jml_hadir: 28, abs_sakit: 0, abs_ijin: 2, abs_alpha: 0, foto: '' },
-            { id: '1003', tanggal: '2026-05-07', nip_user: 'peserta', nama_user: 'Guru Aktif, S.Pd', jam_mulai: '1', jam_selesai: '2', kelas: 'Umum', uraian: 'Upacara Bendera', jml_hadir: 0, abs_sakit: 0, abs_ijin: 0, abs_alpha: 0, foto: '' },
+            { id: '1001', tanggal: '2026-05-06', nip_user: 'peserta', nama_user: 'Guru Aktif, S.Pd', jam_mulai: '1', jam_selesai: '3', kelas: '7A', uraian: 'Mempelajari Aljabar Dasar', jml_hadir: 30, abs_sakit: 1, abs_ijin: 0, abs_alpha: 0, foto: '' },
+            { id: '1002', tanggal: '2026-05-06', nip_user: 'peserta', nama_user: 'Guru Aktif, S.Pd', jam_mulai: '4', jam_selesai: '5', kelas: '8B', uraian: 'Persamaan Linear', jml_hadir: 28, abs_sakit: 0, abs_ijin: 2, abs_alpha: 0, foto: '' }
         ];
 
         if(IS_PREVIEW) {
@@ -229,22 +233,10 @@
             journalsData = [...dummyJournals];
         }
 
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
-        };
-
         const showLoader = (show) => {
             const l = document.getElementById('loader');
-            if(show) {
-                l.classList.remove('hidden');
-                setTimeout(() => l.classList.remove('opacity-0'), 10);
-            } else {
-                l.classList.add('opacity-0');
-                setTimeout(() => l.classList.add('hidden'), 300);
-            }
+            if(show) { l.classList.remove('hidden'); setTimeout(() => l.classList.remove('opacity-0'), 10); } 
+            else { l.classList.add('opacity-0'); setTimeout(() => l.classList.add('hidden'), 300); }
         };
 
         const notify = (title, icon = 'success') => {
@@ -264,8 +256,7 @@
                     img.src = event.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        let width = img.width;
-                        let height = img.height;
+                        let width = img.width, height = img.height;
                         const maxDim = isAvatar ? 200 : 400; 
                         if (width > height) { if (width > maxDim) { height *= maxDim / width; width = maxDim; } } 
                         else { if (height > maxDim) { width *= maxDim / height; height = maxDim; } }
@@ -278,22 +269,7 @@
             });
         };
 
-        async function callBackend(action, data) {
-            try {
-                if(!GAS_URL || GAS_URL === "" || GAS_URL === "URL_DEPLOY_GAS_ANDA_DISINI") {
-                    return { status: 'error', message: 'Konfigurasi GAS_URL belum diatur' };
-                }
-                const response = await fetch(GAS_URL, {
-                    method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: action, data: data }), redirect: 'follow'
-                });
-                return await response.json();
-            } catch (error) {
-                return { status: 'error', message: 'Gagal terhubung ke server. ' + error.message };
-            }
-        }
-
-        function handleLogin() {
+        async function handleLogin() {
             const nip = document.getElementById('login-nip').value.trim();
             const pass = document.getElementById('login-pass').value.trim();
 
@@ -304,43 +280,52 @@
             if (IS_PREVIEW) {
                 setTimeout(() => {
                     const user = usersData.find(u => String(u.nip) === String(nip) && String(u.password) === String(pass));
-                    if (user) {
-                        currentUser = user;
+                    if (user) { currentUser = user; initApp(); notify('Selamat datang!'); } 
+                    else { notify('NIP atau Password salah!', 'error'); }
+                    showLoader(false);
+                }, 1000);
+            } else {
+                try {
+                    // SETUP ADMIN OTOMATIS SAAT PERTAMA KALI JALAN
+                    const adminRef = doc(db, "users", "admin");
+                    const adminSnap = await getDoc(adminRef);
+                    if (!adminSnap.exists() && nip === 'admin' && pass === 'admin2026') {
+                        await setDoc(adminRef, { nip: 'admin', nama: 'Admin SIJARI', password: 'admin2026', role: 'Admin', mapel: '-', foto: '' });
+                    }
+
+                    // PROSES LOGIN
+                    const userRef = doc(db, "users", nip);
+                    const userSnap = await getDoc(userRef);
+
+                    if (userSnap.exists() && String(userSnap.data().password) === String(pass)) {
+                        currentUser = userSnap.data();
+                        
+                        // LOAD DATA Users
+                        const usersQuery = await getDocs(collection(db, "users"));
+                        usersData = usersQuery.docs.map(d => d.data());
+
+                        // LOAD DATA Journals
+                        const journalsQuery = await getDocs(collection(db, "journals"));
+                        journalsData = journalsQuery.docs.map(d => d.data());
+
                         initApp();
                         notify('Selamat datang!');
                     } else {
                         notify('NIP atau Password salah!', 'error');
                     }
                     showLoader(false);
-                }, 1000);
-            } else {
-                callBackend('login', { nip: nip, password: pass }).then(res => {
+                } catch (error) {
                     showLoader(false);
-                    if(res.status === 'success') {
-                        currentUser = res.user; journalsData = res.journals; usersData = res.users;
-                        initApp();
-                        notify('Selamat datang!');
-                    } else { notify(res.message, 'error'); }
-                });
+                    notify('Error Koneksi Firebase: ' + error.message, 'error');
+                }
             }
         }
 
         function handleLogout() {
             Swal.fire({
-                title: 'Keluar Sistem?',
-                text: "Sesi Anda akan diakhiri.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#4f46e5',
-                cancelButtonColor: '#94a3b8',
-                confirmButtonText: 'Ya, Logout',
-                cancelButtonText: 'Batal',
-                customClass: {
-                    confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-md hover:bg-indigo-700 w-full sm:w-auto',
-                    cancelButton: 'rounded-xl px-6 py-3 font-bold hover:bg-slate-500 w-full sm:w-auto mt-2 sm:mt-0',
-                    popup: 'rounded-[2rem] p-6',
-                    actions: 'flex-col sm:flex-row w-full'
-                }
+                title: 'Keluar Sistem?', text: "Sesi Anda akan diakhiri.", icon: 'warning', showCancelButton: true,
+                confirmButtonColor: '#4f46e5', cancelButtonColor: '#94a3b8', confirmButtonText: 'Ya, Logout', cancelButtonText: 'Batal',
+                customClass: { confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-md hover:bg-indigo-700 w-full sm:w-auto', cancelButton: 'rounded-xl px-6 py-3 font-bold hover:bg-slate-500 w-full sm:w-auto mt-2 sm:mt-0', popup: 'rounded-[2rem] p-6', actions: 'flex-col sm:flex-row w-full' }
             }).then((result) => {
                 if (result.isConfirmed) {
                     currentUser = null;
@@ -356,12 +341,10 @@
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('main-layout').classList.remove('hidden');
             
-            // Populate Desktop
             document.getElementById('user-photo-sidebar').src = getAvatar(currentUser.nama, currentUser.foto);
             document.getElementById('user-name-sidebar').innerText = currentUser.nama;
             document.getElementById('user-role-badge').innerText = currentUser.role;
 
-            // Populate Mobile
             document.getElementById('mobile-top-user-photo').src = getAvatar(currentUser.nama, currentUser.foto);
             document.getElementById('mobile-top-user-role').innerText = currentUser.role;
 
@@ -369,10 +352,7 @@
             renderPage('dashboard');
         }
 
-        function resetAndGoToInput() {
-            editingJournalData = null; 
-            renderPage('input-jurnal');
-        }
+        function resetAndGoToInput() { editingJournalData = null; renderPage('input-jurnal'); }
 
         function renderMenu() {
             const deskNav = document.getElementById('desktop-nav-menu');
@@ -388,7 +368,6 @@
             }
             menus.push({ id: 'profile', label: 'Pengaturan Profil', short: 'Profil', icon: 'fa-user-shield', action: "renderPage('profile')" });
 
-            // Desktop Render
             deskNav.innerHTML = menus.map(m => `
                 <button onclick="${m.action}" id="btn-desktop-${m.id}" title="${m.label}" class="w-full flex items-center justify-start space-x-4 py-3.5 px-4 text-slate-400 hover:bg-slate-800/80 hover:text-slate-100 rounded-2xl transition-all duration-300 nav-btn-desktop font-semibold group relative overflow-hidden border-l-4 border-transparent">
                     <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-800/80 text-current icon-container transition-all duration-300 group-hover:scale-110 group-hover:text-indigo-400 group-hover:bg-slate-700 shadow-inner">
@@ -398,7 +377,6 @@
                 </button>
             `).join('');
 
-            // Mobile Render (App-like Bottom Navigation)
             mobNav.innerHTML = menus.map(m => `
                 <button onclick="${m.action}" id="btn-mobile-${m.id}" class="relative flex-1 h-full flex flex-col items-center justify-center group nav-btn-mobile transition-all duration-300 outline-none">
                     <div class="mobile-icon-wrap w-11 h-11 rounded-[14px] flex items-center justify-center text-slate-400 bg-transparent transition-all duration-300 z-10 relative">
@@ -422,10 +400,8 @@
             const activeMobile = document.getElementById('btn-mobile-' + page);
             if(activeMobile) activeMobile.classList.add('mobile-item-active');
 
-            // Scroll container to top smoothly
             document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
 
-            // Render Layouts
             container.style.opacity = 0;
             container.style.transform = 'translateY(10px)';
             
@@ -441,13 +417,11 @@
             }, 50);
         }
 
-        // --- DASHBOARD RENDERER ---
         function renderDashboard(container, filteredData = null, filterState = {}) {
             let dataToShow = filteredData || journalsData;
             if (!filteredData && currentUser.role === 'Guru') dataToShow = journalsData.filter(j => j.nip_user === currentUser.nip);
             currentFilteredJournals = dataToShow; 
 
-            // Calculate Widgets
             const totalJurnal = currentFilteredJournals.length;
             let totalJam = 0, totalHadirSiswa = 0;
             currentFilteredJournals.forEach(j => {
@@ -464,7 +438,6 @@
                         <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">Dashboard Jurnal</h1>
                         <p class="text-[12px] md:text-sm text-slate-500 mt-1 font-medium">Pantau aktivitas mengajar harian</p>
                     </div>
-                    <!-- Action Buttons (Responsive Grid on Mobile) -->
                     <div class="grid grid-cols-2 md:flex gap-3 w-full lg:w-auto">
                         <button onclick="handlePrintDialog()" class="action-btn bg-white border border-slate-200 text-slate-700 px-4 py-3 md:py-2.5 rounded-xl hover:border-indigo-300 hover:text-indigo-600 text-[13px] md:text-sm font-bold flex items-center justify-center gap-2 shadow-sm">
                             <i class="fas fa-print"></i> Cetak Laporan
@@ -480,7 +453,6 @@
                     </div>
                 </div>
 
-                <!-- WIDGET STATISTIK RINGKAS (2x2 Grid on Mobile) -->
                 <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 mb-6 md:mb-8">
                     <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl md:rounded-[1.5rem] p-4 md:p-6 shadow-md shadow-indigo-200 text-white relative overflow-hidden group col-span-1">
                         <div class="absolute -right-2 -bottom-2 text-white/10 group-hover:scale-110 transition-transform duration-500"><i class="fas fa-book text-6xl md:text-8xl"></i></div>
@@ -505,7 +477,6 @@
                     </div>
                 </div>
 
-                <!-- FILTER DATA -->
                 <div class="bg-white p-5 md:p-6 rounded-2xl md:rounded-[1.5rem] shadow-sm border border-slate-100 mb-6 md:mb-8 relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-1.5 h-full bg-indigo-500"></div>
                     <div class="flex items-center gap-2 md:gap-3 mb-4 md:mb-5 pl-2">
@@ -684,17 +655,17 @@
                             applyFilters(); showLoader(false); notify('Jurnal berhasil dihapus');
                         }, 1000);
                     } else {
-                        callBackend('deleteSingleJournalGAS', { id: id }).then(res => {
-                            showLoader(false);
-                            if(res.status === 'success') { journalsData = res.journals; applyFilters(); notify('Jurnal berhasil dihapus'); } 
-                            else { notify(res.message, 'error'); }
+                        deleteDoc(doc(db, "journals", String(id))).then(() => {
+                            journalsData = journalsData.filter(j => String(j.id) !== String(id));
+                            applyFilters(); showLoader(false); notify('Jurnal berhasil dihapus');
+                        }).catch(err => {
+                            showLoader(false); notify(err.message, 'error');
                         });
                     }
                 }
             });
         }
 
-        // --- INPUT / EDIT JURNAL RENDERER ---
         function renderInputJurnal(container) {
             const isGuru = currentUser.role === 'Guru';
             const titleText = editingJournalData ? 'Edit Data Jurnal' : (currentUser.role === 'Kepsek' ? 'Isi Jurnal Kepsek' : 'Isi Jurnal Harian');
@@ -917,8 +888,6 @@
                 data.jml_hadir = 0; data.abs_sakit = 0; data.abs_ijin = 0; data.abs_alpha = 0;
             }
 
-            const actionType = editingJournalData ? 'updateJournal' : 'saveJournal';
-
             if(IS_PREVIEW) {
                 setTimeout(() => {
                     if (editingJournalData) {
@@ -934,19 +903,25 @@
                     renderPage('dashboard');
                 }, 1000);
             } else {
-                callBackend(actionType, { jurnalData: data }).then(res => {
+                try {
+                    await setDoc(doc(db, "journals", data.id), data);
+                    if (editingJournalData) {
+                        const index = journalsData.findIndex(j => String(j.id) === String(data.id));
+                        if(index !== -1) journalsData[index] = data;
+                    } else {
+                        journalsData.unshift(data);
+                    }
                     showLoader(false);
-                    if(res.status === 'success') {
-                        journalsData = res.journals;
-                        notify(editingJournalData ? 'Jurnal diperbarui!' : 'Jurnal disimpan!');
-                        editingJournalData = null; 
-                        renderPage('dashboard'); 
-                    } else { notify(res.message, 'error'); }
-                });
+                    notify(editingJournalData ? 'Jurnal diperbarui!' : 'Jurnal disimpan!');
+                    editingJournalData = null; 
+                    renderPage('dashboard');
+                } catch(e) {
+                    showLoader(false);
+                    notify(e.message, 'error');
+                }
             }
         }
 
-        // --- MANAGE USERS RENDERER ---
         function renderManageUsers(container) {
             container.innerHTML = `
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 md:mb-8 gap-4 md:gap-5">
@@ -1084,14 +1059,16 @@
                         showLoader(false); notify('Data user disimpan!'); renderPage('manage-users');
                     }, 1000);
                 } else {
-                    callBackend('saveUser', { userData: formValues }).then(res => {
-                        showLoader(false);
-                        if(res.status === 'success') {
-                            usersData = res.users;
-                            if (currentUser && currentUser.nip === formValues.nip) { currentUser = formValues; initApp(); }
-                            renderPage('manage-users'); notify('Berhasil disimpan!');
-                        } else { notify(res.message, 'error'); }
-                    });
+                    try {
+                        await setDoc(doc(db, "users", formValues.nip), formValues);
+                        if(nip) { const idx = usersData.findIndex(u => String(u.nip) === String(nip)); usersData[idx] = formValues; } 
+                        else { usersData.push(formValues); }
+                        
+                        if (currentUser && currentUser.nip === formValues.nip) { currentUser = formValues; initApp(); }
+                        showLoader(false); notify('Berhasil disimpan!'); renderPage('manage-users');
+                    } catch(e) {
+                        showLoader(false); notify(e.message, 'error');
+                    }
                 }
             }
         }
@@ -1107,7 +1084,6 @@
             }
         }
 
-        // --- PROFILE RENDERER ---
         function renderProfile(container) {
             container.innerHTML = `
                 <div class="max-w-md mx-auto bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-100 text-center relative overflow-hidden mt-4 md:mt-6">
@@ -1161,11 +1137,8 @@
 
         function updateAllProfileImages(nama, foto) {
             const avatarUrl = getAvatar(nama, foto);
-            const els = ['user-photo-sidebar', 'mobile-top-user-photo', 'mobile-user-photo'];
-            els.forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.src = avatarUrl;
-            });
+            const els = ['user-photo-sidebar', 'mobile-top-user-photo'];
+            els.forEach(id => { const el = document.getElementById(id); if(el) el.src = avatarUrl; });
             const nameSidebar = document.getElementById('user-name-sidebar');
             if(nameSidebar) nameSidebar.innerText = nama;
         }
@@ -1174,45 +1147,29 @@
             showLoader(true);
             const imgPreviewSrc = document.getElementById('p-foto-preview').src;
             const finalFoto = imgPreviewSrc.startsWith('data:image') ? imgPreviewSrc : currentUser.foto;
-            
             const mapelInput = document.getElementById('p-mapel');
             const mapelVal = mapelInput ? mapelInput.value : currentUser.mapel;
-
-            const newData = { 
-                ...currentUser, 
-                nama: document.getElementById('p-nama').value, 
-                mapel: mapelVal, 
-                password: document.getElementById('p-pass').value, 
-                foto: finalFoto 
-            };
+            const newData = { ...currentUser, nama: document.getElementById('p-nama').value, mapel: mapelVal, password: document.getElementById('p-pass').value, foto: finalFoto };
 
             if(IS_PREVIEW) {
                 setTimeout(() => {
                     currentUser = newData;
                     const idx = usersData.findIndex(u => String(u.nip) === String(currentUser.nip));
                     if(idx !== -1) usersData[idx] = newData;
-                    
-                    updateAllProfileImages(currentUser.nama, currentUser.foto);
-                    initApp(); 
-                    showLoader(false); 
-                    notify('Profil berhasil diperbarui!');
+                    updateAllProfileImages(currentUser.nama, currentUser.foto); initApp(); showLoader(false); notify('Profil diperbarui!');
                 }, 1000);
             } else {
-                callBackend('saveUser', { userData: newData }).then(res => {
-                    showLoader(false);
-                    if(res.status === 'success') { 
-                        currentUser = newData; 
-                        usersData = res.users; 
-                        updateAllProfileImages(currentUser.nama, currentUser.foto);
-                        initApp(); 
-                        notify('Berhasil diperbarui!'); 
-                    } 
-                    else { notify(res.message, 'error'); }
+                setDoc(doc(db, "users", newData.nip), newData).then(() => {
+                    currentUser = newData;
+                    const idx = usersData.findIndex(u => String(u.nip) === String(currentUser.nip));
+                    if(idx !== -1) usersData[idx] = newData;
+                    updateAllProfileImages(currentUser.nama, currentUser.foto); initApp(); showLoader(false); notify('Profil diperbarui!');
+                }).catch(e => {
+                    showLoader(false); notify(e.message, 'error');
                 });
             }
         }
 
-        // --- PRINTING LOGIC (Minified Logic) ---
         async function handlePrintDialog() {
             const isAdminOrKepsek = currentUser.role === 'Admin' || currentUser.role === 'Kepsek';
             let htmlContent = `<div class="text-left space-y-4 p-1"><p class="text-[13px] md:text-sm text-slate-500 mb-2 md:mb-4">Tentukan rentang tanggal laporan.</p><div class="grid grid-cols-2 gap-3 md:gap-4"><div><label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase block mb-1">Dari Tanggal</label><input type="date" id="print-start" class="w-full p-2.5 md:p-3 border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 text-[13px] md:text-sm bg-slate-50 font-medium"></div><div><label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase block mb-1">Sampai Tanggal</label><input type="date" id="print-end" class="w-full p-2.5 md:p-3 border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 text-[13px] md:text-sm bg-slate-50 font-medium"></div></div>`;
@@ -1323,7 +1280,15 @@
                 if(confirm.isConfirmed) {
                     showLoader(true);
                     if (IS_PREVIEW) { setTimeout(() => { journalsData = []; showLoader(false); renderPage('dashboard'); notify('Seluruh data dihapus'); }, 1000); } 
-                    else { callBackend('deleteJournalsGAS', { type: 'all' }).then(res => { showLoader(false); if(res.status === 'success') { journalsData = res.journals; renderPage('dashboard'); notify('Seluruh data dihapus'); } else { notify(res.message, 'error'); } }); }
+                    else {
+                        try {
+                            const batch = writeBatch(db);
+                            journalsData.forEach(j => batch.delete(doc(db, "journals", String(j.id))));
+                            await batch.commit();
+                            journalsData = []; renderPage('dashboard'); notify('Seluruh data dihapus');
+                        } catch(e) { notify(e.message, 'error'); }
+                        showLoader(false);
+                    }
                 }
             } else if (type === 'range') {
                 const { value: dates } = await Swal.fire({
@@ -1334,7 +1299,17 @@
                 if(dates && dates[0] && dates[1]) {
                     showLoader(true);
                     if (IS_PREVIEW) { setTimeout(() => { journalsData = journalsData.filter(j => j.tanggal < dates[0] || j.tanggal > dates[1]); showLoader(false); renderPage('dashboard'); notify('Data dihapus'); }, 1000); } 
-                    else { callBackend('deleteJournalsGAS', { type: 'range', start: dates[0], end: dates[1] }).then(res => { showLoader(false); if(res.status === 'success') { journalsData = res.journals; renderPage('dashboard'); notify('Data rentang tanggal dihapus'); } else { notify(res.message, 'error'); } }); }
+                    else {
+                        try {
+                            const batch = writeBatch(db);
+                            const toDelete = journalsData.filter(j => j.tanggal >= dates[0] && j.tanggal <= dates[1]);
+                            toDelete.forEach(j => batch.delete(doc(db, "journals", String(j.id))));
+                            await batch.commit();
+                            journalsData = journalsData.filter(j => j.tanggal < dates[0] || j.tanggal > dates[1]);
+                            renderPage('dashboard'); notify('Rentang tanggal dihapus');
+                        } catch(e) { notify(e.message, 'error'); }
+                        showLoader(false);
+                    }
                 }
             } else if (type === 'guru') {
                 const { value: nip } = await Swal.fire({
@@ -1344,7 +1319,17 @@
                 if(nip) {
                     showLoader(true);
                     if (IS_PREVIEW) { setTimeout(() => { journalsData = journalsData.filter(j => String(j.nip_user) !== String(nip)); showLoader(false); renderPage('dashboard'); notify('Data guru dihapus'); }, 1000); } 
-                    else { callBackend('deleteJournalsGAS', { type: 'guru', nip: nip }).then(res => { showLoader(false); if(res.status === 'success') { journalsData = res.journals; renderPage('dashboard'); notify('Data jurnal guru dihapus'); } else { notify(res.message, 'error'); } }); }
+                    else {
+                        try {
+                            const batch = writeBatch(db);
+                            const toDelete = journalsData.filter(j => String(j.nip_user) === String(nip));
+                            toDelete.forEach(j => batch.delete(doc(db, "journals", String(j.id))));
+                            await batch.commit();
+                            journalsData = journalsData.filter(j => String(j.nip_user) !== String(nip));
+                            renderPage('dashboard'); notify('Data guru dihapus');
+                        } catch(e) { notify(e.message, 'error'); }
+                        showLoader(false);
+                    }
                 }
             }
         }
@@ -1357,14 +1342,28 @@
         function handleExcelUpload(input) {
             const file = input.files[0]; if (!file) return;
             const reader = new FileReader();
-            reader.onload = (e) => {
+            reader.onload = async (e) => {
                 const rows = XLSX.utils.sheet_to_json(XLSX.read(new Uint8Array(e.target.result), {type: 'array'}).Sheets[XLSX.read(new Uint8Array(e.target.result), {type: 'array'}).SheetNames[0]]);
                 const newUsers = rows.map(r => ({ nip: String(r.NIP || r.nip || '').trim(), nama: String(r.Nama || r.nama || '').trim(), password: String(r.Password || r.password || '123456').trim(), mapel: String(r.Mapel || r.mapel || '-').trim(), role: String(r.Role || r.role || 'Guru').trim(), foto: String(r.Foto || r.foto || '').trim() })).filter(u => u.nip && u.nama);
 
                 if(newUsers.length > 0) {
                     showLoader(true);
                     if (IS_PREVIEW) { setTimeout(() => { usersData = [...usersData, ...newUsers]; showLoader(false); renderPage('manage-users'); notify(`${newUsers.length} user ditambahkan`); }, 1000); } 
-                    else { callBackend('saveUsersBulkGAS', { newUsersArray: newUsers }).then(res => { showLoader(false); if(res.status === 'success') { usersData = res.users; renderPage('manage-users'); notify(`${newUsers.length} user ditambahkan`); } else { notify('Gagal menyimpan: ' + res.message, 'error'); } }); }
+                    else {
+                        try {
+                            const batch = writeBatch(db);
+                            newUsers.forEach(u => batch.set(doc(db, "users", u.nip), u));
+                            await batch.commit();
+                            
+                            newUsers.forEach(nu => {
+                                const exist = usersData.findIndex(u => u.nip === nu.nip);
+                                if(exist !== -1) usersData[exist] = nu; else usersData.push(nu);
+                            });
+                            showLoader(false); renderPage('manage-users'); notify(`${newUsers.length} user ditambahkan`);
+                        } catch(err) {
+                            showLoader(false); notify(err.message, 'error');
+                        }
+                    }
                 } else { notify('Tidak ada data valid yang ditemukan.', 'warning'); }
             }; reader.readAsArrayBuffer(file); input.value = ''; 
         }
@@ -1377,7 +1376,14 @@
                 if (result.isConfirmed) {
                     showLoader(true);
                     if (IS_PREVIEW) { setTimeout(() => { usersData = usersData.filter(u => String(u.nip) !== String(nip)); showLoader(false); notify('User berhasil dihapus'); renderPage('manage-users'); }, 1000); } 
-                    else { callBackend('deleteUserGAS', { nip: nip }).then(res => { showLoader(false); if(res.status === 'success') { usersData = res.users; renderPage('manage-users'); notify('User berhasil dihapus'); } else { notify(res.message, 'error'); } }); }
+                    else {
+                        deleteDoc(doc(db, "users", String(nip))).then(() => {
+                            usersData = usersData.filter(u => String(u.nip) !== String(nip));
+                            showLoader(false); notify('User berhasil dihapus'); renderPage('manage-users');
+                        }).catch(e => {
+                            showLoader(false); notify(e.message, 'error');
+                        });
+                    }
                 }
             });
         }
@@ -1390,10 +1396,49 @@
                 if (result.isConfirmed) {
                     showLoader(true);
                     if (IS_PREVIEW) { setTimeout(() => { usersData = usersData.filter(u => String(u.nip) === String(currentUser.nip)); showLoader(false); notify('Semua user lain dihapus'); renderPage('manage-users'); }, 1000); } 
-                    else { callBackend('deleteAllUsersGAS', { currentAdminNip: currentUser.nip }).then(res => { showLoader(false); if(res.status === 'success') { usersData = res.users; renderPage('manage-users'); notify('Semua user lain dihapus'); } else { notify(res.message, 'error'); } }); }
+                    else {
+                        try {
+                            const batch = writeBatch(db);
+                            const toDelete = usersData.filter(u => String(u.nip) !== String(currentUser.nip));
+                            toDelete.forEach(u => batch.delete(doc(db, "users", String(u.nip))));
+                            batch.commit().then(() => {
+                                usersData = usersData.filter(u => String(u.nip) === String(currentUser.nip));
+                                showLoader(false); notify('Semua user lain dihapus'); renderPage('manage-users');
+                            });
+                        } catch(e) {
+                            showLoader(false); notify(e.message, 'error');
+                        }
+                    }
                 }
             });
         }
+
+        // BIND FUNCTIONS TO WINDOW OBJECT FOR HTML ONCLICK EVENT SUPPORT IN A MODULE
+        window.handleLogin = handleLogin;
+        window.handleLogout = handleLogout;
+        window.resetAndGoToInput = resetAndGoToInput;
+        window.renderPage = renderPage;
+        window.applyFilters = applyFilters;
+        window.resetFilters = resetFilters;
+        window.exportToExcel = exportToExcel;
+        window.editJournalEntry = editJournalEntry;
+        window.deleteIndividualJournal = deleteIndividualJournal;
+        window.previewImage = previewImage;
+        window.handleKelasChange = handleKelasChange;
+        window.previewSelectedFoto = previewSelectedFoto;
+        window.submitJurnal = submitJurnal;
+        window.showUserForm = showUserForm;
+        window.previewSwalFoto = previewSwalFoto;
+        window.updateProfile = updateProfile;
+        window.previewProfilePhoto = previewProfilePhoto;
+        window.handlePrintDialog = handlePrintDialog;
+        window.handleBulkDelete = handleBulkDelete;
+        window.downloadUserTemplate = downloadUserTemplate;
+        window.handleExcelUpload = handleExcelUpload;
+        window.deleteUser = deleteUser;
+        window.handleDeleteAllUsers = handleDeleteAllUsers;
+
     </script>
+    
 </body>
 </html>
