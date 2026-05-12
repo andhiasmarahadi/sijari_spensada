@@ -4,13 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SIJARI - SMP Negeri 1 Dawan</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- SheetJS for Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <style>
@@ -67,7 +63,6 @@
 </head>
 <body oncontextmenu="return false;">
 
-    <!-- LOADING SPINNER -->
     <div id="loader" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-md hidden transition-opacity duration-300">
         <div class="bg-white p-6 rounded-[2rem] shadow-2xl flex flex-col items-center gap-4 animate-bounce">
             <div class="animate-spin rounded-full h-12 w-12 border-4 border-slate-100 border-t-indigo-600"></div>
@@ -75,10 +70,8 @@
         </div>
     </div>
 
-    <!-- MAIN APP CONTAINER -->
     <div id="app" class="h-[100dvh] w-full overflow-hidden">
         
-        <!-- LOGIN SCREEN -->
         <div id="login-screen" class="h-full w-full flex items-center justify-center p-4 sm:p-6 bg-slate-900 relative overflow-hidden">
             <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-indigo-600 rounded-full mix-blend-screen filter blur-[100px] opacity-40 animate-pulse"></div>
             <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-violet-600 rounded-full mix-blend-screen filter blur-[100px] opacity-40 animate-pulse" style="animation-delay: 2s;"></div>
@@ -115,10 +108,8 @@
             </div>
         </div>
 
-        <!-- MAIN LAYOUT -->
         <div id="main-layout" class="hidden h-[100dvh] flex flex-col md:flex-row bg-slate-50">
             
-            <!-- 1. MOBILE TOP HEADER (STICKY) -->
             <header class="md:hidden flex items-center justify-between px-5 py-3.5 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 z-40 fixed top-0 w-full no-print">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white flex items-center justify-center shadow-md shadow-indigo-500/20">
@@ -137,7 +128,6 @@
                 </div>
             </header>
 
-            <!-- 2. DESKTOP SIDEBAR -->
             <aside class="hidden md:flex w-[280px] bg-[#0f172a] shadow-[4px_0_24px_rgba(0,0,0,0.1)] h-full no-print flex-col z-40 border-r border-slate-800/80">
                 <div class="p-8 flex flex-col items-center border-b border-slate-800/60 relative overflow-hidden shrink-0">
                     <div class="absolute inset-0 bg-gradient-to-b from-slate-800/50 to-transparent"></div>
@@ -160,19 +150,16 @@
                 </div>
             </aside>
 
-            <!-- 3. MAIN CONTENT AREA -->
             <main class="flex-1 w-full h-[100dvh] overflow-y-auto overflow-x-hidden relative pt-[72px] pb-[85px] md:pt-0 md:pb-0 bg-slate-50/50">
                 <div id="content-container" class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-10 w-full transition-all duration-300"></div>
             </main>
 
-            <!-- 4. MOBILE BOTTOM NAV (APP-LIKE) -->
             <nav class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-xl border-t border-slate-200/60 z-50 px-2 pt-2 pb-safe shadow-[0_-10px_40px_rgba(0,0,0,0.08)] no-print">
                 <div class="flex justify-around items-end h-[60px]" id="mobile-nav-menu"></div>
             </nav>
         </div>
     </div>
 
-    <!-- FIREBASE & SCRIPT LOGIC (MODULE) -->
     <script type="module">
         // --- 1. FIREBASE IMPORTS ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
@@ -181,7 +168,9 @@
         // =========================================================================
         // KONFIGURASI FIREBASE APLIKASI
         // =========================================================================
-        const IS_PREVIEW = false; // SUDAH DIUBAH MENJADI FALSE AGAR LOGIN BERFUNGSI
+        const IS_PREVIEW = false; // SUDAH DIUBAH MENJADI FALSE AGAR TERHUBUNG KE FIREBASE
+        const APP_LOGO = "https://i.imghippo.com/files/hDT7953HB.png";
+        const PRINT_KOP = "https://i.imghippo.com/files/tuTX6225pKs.png";
         
         const firebaseConfig = {
             apiKey: "AIzaSyCMT8Jw5StNajXE6ua3UZTdGklCTFb7n34",
@@ -218,15 +207,10 @@
         };
 
         const dummyUsers = [
-            { nip: 'admin', nama: 'Admin SIJARI', password: 'edudigital', role: 'Admin', foto: '', mapel: '-' },
-            { nip: 'kepsek', nama: 'Kepala Sekolah, M.Pd', password: 'edudigital', role: 'Kepsek', foto: '', mapel: '-' },
-            { nip: 'peserta', nama: 'Guru Aktif, S.Pd', password: 'edudigital', role: 'Guru', foto: '', mapel: 'Matematika' }
+            { nip: 'admin', nama: 'Admin SIJARI', password: 'edudigital', role: 'Admin', foto: '', mapel: '-' }
         ];
 
-        const dummyJournals = [
-            { id: '1001', tanggal: '2026-05-06', nip_user: 'peserta', nama_user: 'Guru Aktif, S.Pd', jam_mulai: '1', jam_selesai: '3', kelas: '7A', uraian: 'Mempelajari Aljabar Dasar', jml_hadir: 30, abs_sakit: 1, abs_ijin: 0, abs_alpha: 0, foto: '' },
-            { id: '1002', tanggal: '2026-05-06', nip_user: 'peserta', nama_user: 'Guru Aktif, S.Pd', jam_mulai: '4', jam_selesai: '5', kelas: '8B', uraian: 'Persamaan Linear', jml_hadir: 28, abs_sakit: 0, abs_ijin: 2, abs_alpha: 0, foto: '' }
-        ];
+        const dummyJournals = [];
 
         if(IS_PREVIEW) {
             usersData = [...dummyUsers];
@@ -1226,7 +1210,7 @@
                 j.calculatedRowSpan = rSpan; if(!dateSpans[j.tanggal]) dateSpans[j.tanggal] = 0; dateSpans[j.tanggal] += rSpan;
             });
 
-            let tableHeader = isKepsekFormat ? `<tr><th style="width: 5%; text-align: center !important;">No</th><th style="width: 18%; text-align: center !important;">Hari/Tanggal</th><th style="width: 8%; text-align: center !important;">Jam Ke</th><th style="text-align: center !important;">Uraian Kegiatan</th><th style="width: 25%; text-align: center !important;">Dokumentasi</th></tr>` : `<tr><th rowspan="2" style="width: 4%; text-align: center !important;">No</th><th rowspan="2" style="width: 13%; text-align: center !important;">Hari /<br>Tanggal</th><th rowspan="2" style="width: 6%; text-align: center !important;">Jam Ke</th><th rowspan="2" style="width: 8%; text-align: center !important;">Kelas</th><th rowspan="2" style="text-align: center !important;">Uraian Kegiatan / Pokok Bahasan</th><th colspan="4" style="width: 16%; text-align: center !important;">Kehadiran Siswa</th><th rowspan="2" style="width: 18%; text-align: center !important;">Dokumentasi</th></tr><tr><th style="background-color: #86efac; width: 4%; text-align: center !important;">H</th><th style="background-color: #fde047; width: 4%; text-align: center !important;">S</th><th style="background-color: #93c5fd; width: 4%; text-align: center !important;">I</th><th style="background-color: #fca5a5; width: 4%; text-align: center !important;">A</th></tr>`;
+            let tableHeader = isKepsekFormat ? `<tr><th style="width: 5%; text-align: center !important;">No</th><th style="width: 18%; text-align: center !important;">Hari/Tanggal</th><th style="width: 8%; text-align: center !important;">Jam Ke</th><th style="text-align: center !important;">Uraian Kegiatan</th><th style="width: 25%; text-align: center !important;">Dokumentasi</th></tr>` : `<tr><th rowspan="2" style="width: 4%; text-align: center !important;">No</th><th rowspan="2" style="width: 13%; text-align: center !important;">Hari /<br>Tanggal</th><th rowspan="2" style="width: 6%; text-align: center !important;">Jam Ke</th><th rowspan="2" style="width: 8%; text-align: center !important;">Kelas</th><th rowspan="2" style="text-align: center !important;">Uraian Kegiatan / Pokok Bahasan</th><th colspan="4" style="width: 16%; text-align: center !important;">Kehadiran Siswa</th><th rowspan="2" style="width: 18%; text-align: center !important;">Dokumentasi</th></tr><tr><th style="background-color: #86efac !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; width: 4%; text-align: center !important;">H</th><th style="background-color: #fde047 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; width: 4%; text-align: center !important;">S</th><th style="background-color: #93c5fd !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; width: 4%; text-align: center !important;">I</th><th style="background-color: #fca5a5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; width: 4%; text-align: center !important;">A</th></tr>`;
 
             let tableRows = "", processedDates = {}, dateCounter = 0; 
             sortedData.forEach((j, index) => {
@@ -1240,13 +1224,13 @@
                 if (!processedDates[j.tanggal]) { dateCounter++; rowHTML += `<td class='center' rowspan='${dateSpans[j.tanggal]}'>${dateCounter}</td><td class='center' rowspan='${dateSpans[j.tanggal]}'>${dateDisplay}</td>`; processedDates[j.tanggal] = true; }
 
                 if (isKepsekFormat) {
-                    if (isIstirahat) { rowHTML += `<td colspan='3' class='bg-istirahat' style='background-color: #e0f2fe !important;'>ISTIRAHAT</td></tr>`; } 
+                    if (isIstirahat) { rowHTML += `<td colspan='3' class='bg-istirahat' style='background-color: #e0f2fe !important; -webkit-print-color-adjust: exact; print-color-adjust: exact;'>ISTIRAHAT</td></tr>`; } 
                     else {
                         rowHTML += `<td class='center'>${jamList[0]}</td><td rowspan='${rowSpan}' style='vertical-align: middle !important; padding-left: 8px;'>${j.uraian}</td><td class='center' rowspan='${rowSpan}'>${(j.foto ? "<img src='" + j.foto + "' class='doc'>" : "-")}</td></tr>`;
                         for (let k = 1; k < jamList.length; k++) { rowHTML += `<tr><td class='center'>${jamList[k]}</td></tr>`; }
                     }
                 } else {
-                    if (isIstirahat) { rowHTML += `<td colspan='8' class='bg-istirahat' style='background-color: #e0f2fe !important;'>ISTIRAHAT</td></tr>`; } 
+                    if (isIstirahat) { rowHTML += `<td colspan='8' class='bg-istirahat' style='background-color: #e0f2fe !important; -webkit-print-color-adjust: exact; print-color-adjust: exact;'>ISTIRAHAT</td></tr>`; } 
                     else if (isUmum) {
                         rowHTML += `<td class='center'>${jamList[0]}</td><td colspan='6' rowspan='${rowSpan}' class='bg-istirahat' style='background-color: white !important; font-weight: normal; font-style: normal; text-align: left !important; padding-left: 8px; vertical-align: middle !important;'>${j.uraian}</td><td class='center' rowspan='${rowSpan}'>${(j.foto ? "<img src='" + j.foto + "' class='doc'>" : "-")}</td></tr>`;
                         for (let k = 1; k < jamList.length; k++) { rowHTML += `<tr><td class='center'>${jamList[k]}</td></tr>`; }
@@ -1260,48 +1244,52 @@
 
             let footerHTML = isKepsekFormat ? `<table><tr><td style="text-align: left !important; padding-left: 5%;">Mengetahui<br>Pengawas<br><br><br><br><br>.......................................................<br>NIP.</td><td style="text-align: left !important; padding-left: 15%;">Dawan, ${new Date().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}<br>Kepala SMP Negeri 1 Dawan<br><br><br><br><br>${kepsek.nama}<br>NIP. ${kepsek.nip}</td></tr></table>` : `<table><tr><td>Mengetahui,<br>Kepala SMP Negeri 1 Dawan<br><br><br><br><br><b><u>${kepsek.nama}</u></b><br>NIP. ${kepsek.nip}</td><td>Dawan, ${new Date().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}<br>Guru Mata Pelajaran<br><br><br><br><br><b><u>${guruInfoNama}</u></b><br>${guruInfoNip !== '-' ? 'NIP. ' + guruInfoNip : ''}</td></tr></table>`;
 
-            const htmlString = `<html><head><title>Cetak Laporan Jurnal</title><style>@page { size: A4 portrait; margin: 1cm; } body { font-family: 'Times New Roman', serif; font-size: 10pt; line-height: 1.3; color: black; } .kop { text-align: center; margin-bottom: 15px; width: 100%; } .kop img { width: 100%; height: auto; display: block; object-fit: contain; } h2 { text-align: center; text-transform: uppercase; margin: 10px 0 25px 0; font-size: 14pt; font-weight: bold;} table.data { width: 100%; border-collapse: collapse; margin-top: 10px; } table.data th, table.data td { border: 1px solid black; padding: 5px; text-align: left; vertical-align: middle; } table.data th { text-align: center !important; font-weight: bold; background-color: #dae8f5; } .bg-istirahat { text-align: center !important; vertical-align: middle !important; font-weight: bold; font-style: italic; } .center { text-align: center !important; vertical-align: middle !important; } .footer { margin-top: 30px; width: 100%; page-break-inside: avoid; } .footer table { border: none !important; width: 100%; } .footer td { border: none !important; width: 50%; padding-top: 10px; text-align: center !important; vertical-align: top !important; } img.doc { max-width: 100px; max-height: 100px; object-fit: cover; border-radius: 4px; border: 1px solid #ccc; display: block; margin: 0 auto; }</style></head><body><div class="kop"><img src="${PRINT_KOP}" alt="KOP SURAT DINAS"></div><h2>JURNAL KEGIATAN BELAJAR MENGAJAR</h2><table class="data"><thead>${tableHeader}</thead><tbody>${tableRows}</tbody></table><div class="footer">${footerHTML}</div></body></html>`;
+            // METODE NATIVE DOM INJECTION (100% Anti-Blokir Browser)
+            let printArea = document.getElementById('sijari-print-area');
+            if(printArea) printArea.remove();
 
-            // PERBAIKAN: Gunakan Hidden Iframe agar tidak di-block oleh Browser
-            let iframe = document.getElementById('print-iframe');
-            if (iframe) {
-                iframe.remove(); // Bersihkan iframe cetak sebelumnya
-            }
+            printArea = document.createElement('div');
+            printArea.id = 'sijari-print-area';
+            printArea.innerHTML = `
+                <style>
+                    @media print {
+                        body * { visibility: hidden; }
+                        #sijari-print-area, #sijari-print-area * { visibility: visible; }
+                        #sijari-print-area { position: absolute; left: 0; top: 0; width: 100%; font-family: 'Times New Roman', serif; font-size: 10pt; line-height: 1.3; color: black; background: white; }
+                        #app, #loader { display: none !important; }
+                        .kop { text-align: center; margin-bottom: 15px; width: 100%; }
+                        .kop img { width: 100%; height: auto; display: block; object-fit: contain; }
+                        h2 { text-align: center; text-transform: uppercase; margin: 10px 0 25px 0; font-size: 14pt; font-weight: bold;}
+                        table.data { width: 100%; border-collapse: collapse; margin-top: 10px; }
+                        table.data th, table.data td { border: 1px solid black; padding: 5px; text-align: left; vertical-align: middle; }
+                        table.data th { text-align: center !important; font-weight: bold; background-color: #dae8f5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                        .bg-istirahat { text-align: center !important; vertical-align: middle !important; font-weight: bold; font-style: italic; }
+                        .center { text-align: center !important; vertical-align: middle !important; }
+                        .footer { margin-top: 30px; width: 100%; page-break-inside: avoid; }
+                        .footer table { border: none !important; width: 100%; }
+                        .footer td { border: none !important; width: 50%; padding-top: 10px; text-align: center !important; vertical-align: top !important; }
+                        img.doc { max-width: 100px; max-height: 100px; object-fit: cover; border-radius: 4px; border: 1px solid #ccc; display: block; margin: 0 auto; }
+                    }
+                    @media screen {
+                        #sijari-print-area { display: none; }
+                    }
+                </style>
+                <div class="kop"><img src="${PRINT_KOP}" alt="KOP SURAT DINAS"></div>
+                <h2>JURNAL KEGIATAN BELAJAR MENGAJAR</h2>
+                <table class="data">
+                    <thead>${tableHeader}</thead>
+                    <tbody>${tableRows}</tbody>
+                </table>
+                <div class="footer">${footerHTML}</div>
+            `;
             
-            iframe = document.createElement('iframe');
-            iframe.id = 'print-iframe';
-            
-            // PERBAIKAN UTAMA: Iframe HARUS memiliki dimensi agar Browser mau merender isinya. 
-            // Jika ukurannya 0x0, hasilnya akan tercetak blank putih.
-            iframe.style.position = 'fixed';
-            iframe.style.top = '0';
-            iframe.style.left = '0';
-            iframe.style.width = '100vw';
-            iframe.style.height = '100vh';
-            iframe.style.zIndex = '-9999'; // Disembunyikan di layer paling belakang
-            iframe.style.opacity = '0';    // Dibuat transparan 100%
-            iframe.style.pointerEvents = 'none'; // Mencegah agar tidak bisa diklik
-            iframe.style.border = 'none';
-            document.body.appendChild(iframe);
+            document.body.appendChild(printArea);
 
-            const doc = iframe.contentWindow.document;
-            doc.open();
-            doc.write(htmlString);
-            doc.close();
-
-            // Tampilkan loading sebentar selagi gambar KOP Surat diunduh ke Iframe
             showLoader(true);
-            
-            // Beri waktu 1.5 detik memastikan gambar selesai dimuat sebelum print dipicu
             setTimeout(() => {
                 showLoader(false);
-                try {
-                    iframe.contentWindow.focus();
-                    iframe.contentWindow.print(); // Memicu dialog Print bawaan sistem
-                } catch(e) {
-                    console.error("Print error:", e);
-                }
-            }, 1500); 
+                window.print();
+            }, 1200); 
         }
 
         async function handleBulkDelete() {
