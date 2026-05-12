@@ -181,16 +181,16 @@
         // =========================================================================
         // KONFIGURASI FIREBASE APLIKASI
         // =========================================================================
-        const IS_PREVIEW = false; // GANTI JADI false JIKA FIREBASE SUDAH DISIAPKAN BAWAH INI
+        const IS_PREVIEW = false; // SUDAH DIUBAH MENJADI FALSE AGAR LOGIN BERFUNGSI
         
-          const firebaseConfig = {
-    apiKey: "AIzaSyCMT8Jw5StNajXE6ua3UZTdGklCTFb7n34",
-    authDomain: "sijari-spensada.firebaseapp.com",
-    projectId: "sijari-spensada",
-    storageBucket: "sijari-spensada.firebasestorage.app",
-    messagingSenderId: "747386072610",
-    appId: "1:747386072610:web:06e70bfaab11ce0199247b"
-  };
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMT8Jw5StNajXE6ua3UZTdGklCTFb7n34",
+            authDomain: "sijari-spensada.firebaseapp.com",
+            projectId: "sijari-spensada",
+            storageBucket: "sijari-spensada.firebasestorage.app",
+            messagingSenderId: "747386072610",
+            appId: "1:747386072610:web:06e70bfaab11ce0199247b"
+        };
         // =========================================================================
 
         let db;
@@ -316,7 +316,8 @@
                     showLoader(false);
                 } catch (error) {
                     showLoader(false);
-                    notify('Error Koneksi Firebase: ' + error.message, 'error');
+                    notify('Gagal! Pastikan Rules Firestore disetel ke allow read, write: if true', 'error');
+                    console.error(error);
                 }
             }
         }
@@ -1269,13 +1270,18 @@
             
             iframe = document.createElement('iframe');
             iframe.id = 'print-iframe';
-            // Sembunyikan iframe dari tampilan namun tetap ada di DOM
+            
+            // PERBAIKAN UTAMA: Iframe HARUS memiliki dimensi agar Browser mau merender isinya. 
+            // Jika ukurannya 0x0, hasilnya akan tercetak blank putih.
             iframe.style.position = 'fixed';
-            iframe.style.right = '0';
-            iframe.style.bottom = '0';
-            iframe.style.width = '0';
-            iframe.style.height = '0';
-            iframe.style.border = '0';
+            iframe.style.top = '0';
+            iframe.style.left = '0';
+            iframe.style.width = '100vw';
+            iframe.style.height = '100vh';
+            iframe.style.zIndex = '-9999'; // Disembunyikan di layer paling belakang
+            iframe.style.opacity = '0';    // Dibuat transparan 100%
+            iframe.style.pointerEvents = 'none'; // Mencegah agar tidak bisa diklik
+            iframe.style.border = 'none';
             document.body.appendChild(iframe);
 
             const doc = iframe.contentWindow.document;
@@ -1285,11 +1291,17 @@
 
             // Tampilkan loading sebentar selagi gambar KOP Surat diunduh ke Iframe
             showLoader(true);
+            
+            // Beri waktu 1.5 detik memastikan gambar selesai dimuat sebelum print dipicu
             setTimeout(() => {
                 showLoader(false);
-                iframe.contentWindow.focus();
-                iframe.contentWindow.print(); // Memicu dialog Print bawaan sistem
-            }, 1000);
+                try {
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print(); // Memicu dialog Print bawaan sistem
+                } catch(e) {
+                    console.error("Print error:", e);
+                }
+            }, 1500); 
         }
 
         async function handleBulkDelete() {
