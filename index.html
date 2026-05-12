@@ -49,10 +49,19 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
+        /* PRINT STYLING */
+        @media screen {
+            #sijari-print-area { display: none !important; }
+        }
         @media print {
-            .no-print { display: none !important; }
-            body { background: white; }
-            .print-area { width: 100%; margin: 0; padding: 0; }
+            body { background: white !important; margin: 0; padding: 0; }
+            #app, #loader, .swal2-container, .no-print { display: none !important; }
+            #sijari-print-area { display: block !important; font-family: 'Times New Roman', serif; font-size: 10pt; color: black; padding: 0; margin: 0; width: 100%; }
+            @page { size: A4 portrait; margin: 1cm; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { border: 1px solid black; padding: 5px; }
+            th { background-color: #dae8f5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-weight: bold; text-align: center !important; }
+            .center { text-align: center !important; }
         }
         
         .pb-safe { padding-bottom: env(safe-area-inset-bottom, 1rem); }
@@ -80,23 +89,11 @@
                 <div class="bg-white p-3 md:p-4 rounded-[2rem] inline-block mb-6 md:mb-8 shadow-lg shadow-indigo-500/20 border border-slate-100">
                     <img src="https://i.imghippo.com/files/hDT7953HB.png" alt="Logo SIJARI" class="w-32 md:w-40 hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/150x50?text=SIJARI'">
                 </div>
-                
                 <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-2 tracking-tight">Selamat Datang</h1>
                 <p class="text-xs md:text-sm text-slate-500 mb-8 font-medium">Silakan masuk menggunakan NIP Anda</p>
-
                 <div class="space-y-4 md:space-y-5">
-                    <div class="relative group">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 group-focus-within:text-indigo-600 transition-colors">
-                            <i class="fas fa-user text-lg"></i>
-                        </span>
-                        <input type="text" id="login-nip" placeholder="NIP / Username" class="w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-slate-100 bg-white/50 focus:bg-white transition-all font-semibold text-slate-800 placeholder-slate-400">
-                    </div>
-                    <div class="relative group">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 group-focus-within:text-indigo-600 transition-colors">
-                            <i class="fas fa-lock text-lg"></i>
-                        </span>
-                        <input type="password" id="login-pass" placeholder="Password" class="w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-slate-100 bg-white/50 focus:bg-white transition-all font-semibold text-slate-800 placeholder-slate-400">
-                    </div>
+                    <input type="text" id="login-nip" placeholder="NIP / Username" class="w-full pl-6 pr-4 py-4 rounded-2xl border-2 border-slate-100 bg-white/50 focus:bg-white transition-all font-semibold text-slate-800 placeholder-slate-400">
+                    <input type="password" id="login-pass" placeholder="Password" class="w-full pl-6 pr-4 py-4 rounded-2xl border-2 border-slate-100 bg-white/50 focus:bg-white transition-all font-semibold text-slate-800 placeholder-slate-400">
                     <button onclick="handleLogin()" class="w-full bg-slate-900 hover:bg-indigo-600 text-white font-bold py-4 rounded-2xl transition-colors duration-300 shadow-xl shadow-slate-900/20 active:scale-[0.98] mt-4 text-[15px] tracking-wide">
                         MASUK SISTEM
                     </button>
@@ -109,12 +106,9 @@
         </div>
 
         <div id="main-layout" class="hidden h-[100dvh] flex flex-col md:flex-row bg-slate-50">
-            
             <header class="md:hidden flex items-center justify-between px-5 py-3.5 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 z-40 fixed top-0 w-full no-print">
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white flex items-center justify-center shadow-md shadow-indigo-500/20">
-                        <i class="fas fa-book-open text-sm"></i>
-                    </div>
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white flex items-center justify-center shadow-md shadow-indigo-500/20"><i class="fas fa-book-open text-sm"></i></div>
                     <div class="flex flex-col">
                         <span class="font-extrabold text-slate-800 text-[15px] tracking-tight leading-tight">SIJARI</span>
                         <span id="mobile-top-user-role" class="text-[9px] text-indigo-500 font-bold uppercase tracking-widest leading-tight">ROLE</span>
@@ -122,9 +116,7 @@
                 </div>
                 <div class="flex items-center gap-3">
                     <img id="mobile-top-user-photo" src="" class="w-9 h-9 rounded-full object-cover border-[2px] border-indigo-100 shadow-sm bg-slate-100">
-                    <button onclick="handleLogout()" class="w-9 h-9 flex items-center justify-center bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-100 active:scale-95 transition-all">
-                        <i class="fas fa-power-off text-sm"></i>
-                    </button>
+                    <button onclick="handleLogout()" class="w-9 h-9 flex items-center justify-center bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-100 active:scale-95 transition-all"><i class="fas fa-power-off text-sm"></i></button>
                 </div>
             </header>
 
@@ -137,14 +129,10 @@
                     <h3 id="user-name-sidebar" class="font-bold text-white text-center relative z-10 text-[15px] tracking-wide line-clamp-1">Nama User</h3>
                     <span id="user-role-badge" class="px-4 py-1 bg-indigo-500/20 text-indigo-300 text-[10px] uppercase font-bold rounded-lg mt-2 relative z-10 border border-indigo-500/30 tracking-widest">Role</span>
                 </div>
-                
                 <nav class="p-5 flex flex-col gap-2 overflow-y-auto flex-1 custom-scroll" id="desktop-nav-menu"></nav>
-
                 <div class="p-5 border-t border-slate-800/60 shrink-0 bg-slate-900/50">
-                    <button onclick="handleLogout()" class="w-full flex items-center justify-start space-x-4 p-4 text-slate-400 hover:bg-rose-500/10 hover:text-rose-400 rounded-2xl transition-all font-semibold group">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-800 group-hover:bg-rose-500/20 transition-colors shadow-inner">
-                            <i class="fas fa-power-off text-[15px]"></i>
-                        </div>
+                    <button onclick="handleLogout()" class="w-full flex items-center justify-start space-x-4 p-4 text-slate-400 hover:bg-rose-50/10 hover:text-rose-400 rounded-2xl transition-all font-semibold group">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-800 group-hover:bg-rose-500/20 transition-colors shadow-inner"><i class="fas fa-power-off text-[15px]"></i></div>
                         <span class="text-[14px] tracking-wide">Keluar Sistem</span>
                     </button>
                 </div>
@@ -161,14 +149,11 @@
     </div>
 
     <script type="module">
-        // --- 1. FIREBASE IMPORTS ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, doc, setDoc, getDoc, getDocs, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // =========================================================================
-        // KONFIGURASI FIREBASE APLIKASI
-        // =========================================================================
-        const IS_PREVIEW = false; // SUDAH DIUBAH MENJADI FALSE AGAR TERHUBUNG KE FIREBASE
+        // CONFIG FIREBASE SIJARI SPENSADA
+        const IS_PREVIEW = false; 
         const APP_LOGO = "https://i.imghippo.com/files/hDT7953HB.png";
         const PRINT_KOP = "https://i.imghippo.com/files/tuTX6225pKs.png";
         
@@ -180,47 +165,26 @@
             messagingSenderId: "747386072610",
             appId: "1:747386072610:web:06e70bfaab11ce0199247b"
         };
-        // =========================================================================
 
-        let db;
-        if (!IS_PREVIEW) {
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-            } catch(e) {
-                console.error("Firebase Initialization Error:", e);
-            }
-        }
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-        // --- DATA STATE ---
+        // DATA STATE
         let currentUser = null;
         let journalsData = [];
         let usersData = [];
-        let activePage = 'dashboard';
-        let currentFilteredJournals = []; 
         let editingJournalData = null; 
+        let currentFilteredJournals = [];
 
         const getAvatar = (nama, foto) => {
             if (foto && typeof foto === 'string' && foto.startsWith('data:image')) return foto;
-            if (foto && typeof foto === 'string' && foto.trim() !== '' && !foto.includes('via.placeholder.com') && !foto.includes('ui-avatars.com')) return foto.trim();
+            if (foto && typeof foto === 'string' && foto.trim() !== '' && !foto.includes('via.placeholder.com')) return foto.trim();
             return `https://ui-avatars.com/api/?name=${encodeURIComponent(nama || 'User')}&background=4f46e5&color=ffffff&bold=true&rounded=true`;
         };
 
-        const dummyUsers = [
-            { nip: 'admin', nama: 'Admin SIJARI', password: 'edudigital', role: 'Admin', foto: '', mapel: '-' }
-        ];
-
-        const dummyJournals = [];
-
-        if(IS_PREVIEW) {
-            usersData = [...dummyUsers];
-            journalsData = [...dummyJournals];
-        }
-
         const showLoader = (show) => {
             const l = document.getElementById('loader');
-            if(show) { l.classList.remove('hidden'); setTimeout(() => l.classList.remove('opacity-0'), 10); } 
-            else { l.classList.add('opacity-0'); setTimeout(() => l.classList.add('hidden'), 300); }
+            if(show) { l.classList.remove('hidden'); } else { l.classList.add('hidden'); }
         };
 
         const notify = (title, icon = 'success') => {
@@ -256,68 +220,42 @@
         async function handleLogin() {
             const nip = document.getElementById('login-nip').value.trim();
             const pass = document.getElementById('login-pass').value.trim();
-
             if(!nip || !pass) return notify('Mohon isi NIP dan Password!', 'warning');
-
             showLoader(true);
-
-            if (IS_PREVIEW) {
-                setTimeout(() => {
-                    const user = usersData.find(u => String(u.nip) === String(nip) && String(u.password) === String(pass));
-                    if (user) { currentUser = user; initApp(); notify('Selamat datang!'); } 
-                    else { notify('NIP atau Password salah!', 'error'); }
-                    showLoader(false);
-                }, 1000);
-            } else {
-                try {
-                    // SETUP ADMIN OTOMATIS SAAT PERTAMA KALI JALAN
-                    const adminRef = doc(db, "users", "admin");
-                    const adminSnap = await getDoc(adminRef);
-                    if (!adminSnap.exists() && nip === 'admin' && pass === 'admin2026') {
-                        await setDoc(adminRef, { nip: 'admin', nama: 'Admin SIJARI', password: 'admin2026', role: 'Admin', mapel: '-', foto: '' });
-                    }
-
-                    // PROSES LOGIN
-                    const userRef = doc(db, "users", nip);
-                    const userSnap = await getDoc(userRef);
-
-                    if (userSnap.exists() && String(userSnap.data().password) === String(pass)) {
-                        currentUser = userSnap.data();
-                        
-                        // LOAD DATA Users
-                        const usersQuery = await getDocs(collection(db, "users"));
-                        usersData = usersQuery.docs.map(d => d.data());
-
-                        // LOAD DATA Journals
-                        const journalsQuery = await getDocs(collection(db, "journals"));
-                        journalsData = journalsQuery.docs.map(d => d.data());
-
-                        initApp();
-                        notify('Selamat datang!');
-                    } else {
-                        notify('NIP atau Password salah!', 'error');
-                    }
-                    showLoader(false);
-                } catch (error) {
-                    showLoader(false);
-                    notify('Gagal! Pastikan Rules Firestore disetel ke allow read, write: if true', 'error');
-                    console.error(error);
+            try {
+                const adminRef = doc(db, "users", "admin");
+                const adminSnap = await getDoc(adminRef);
+                if (!adminSnap.exists() && nip === 'admin' && pass === 'admin2026') {
+                    await setDoc(adminRef, { nip: 'admin', nama: 'Admin SIJARI', password: 'admin2026', role: 'Admin', mapel: '-', foto: '' });
                 }
+                const userRef = doc(db, "users", nip);
+                const userSnap = await getDoc(userRef);
+                if (userSnap.exists() && String(userSnap.data().password) === String(pass)) {
+                    currentUser = userSnap.data();
+                    const usersQuery = await getDocs(collection(db, "users"));
+                    usersData = usersQuery.docs.map(d => d.data());
+                    const journalsQuery = await getDocs(collection(db, "journals"));
+                    journalsData = journalsQuery.docs.map(d => d.data());
+                    initApp();
+                    notify('Selamat datang!');
+                } else { notify('NIP atau Password salah!', 'error'); }
+                showLoader(false);
+            } catch (error) {
+                showLoader(false);
+                notify('Database Firestore belum aktif atau Rules salah.', 'error');
             }
         }
 
         function handleLogout() {
             Swal.fire({
                 title: 'Keluar Sistem?', text: "Sesi Anda akan diakhiri.", icon: 'warning', showCancelButton: true,
-                confirmButtonColor: '#4f46e5', cancelButtonColor: '#94a3b8', confirmButtonText: 'Ya, Logout', cancelButtonText: 'Batal',
-                customClass: { confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-md hover:bg-indigo-700 w-full sm:w-auto', cancelButton: 'rounded-xl px-6 py-3 font-bold hover:bg-slate-500 w-full sm:w-auto mt-2 sm:mt-0', popup: 'rounded-[2rem] p-6', actions: 'flex-col sm:flex-row w-full' }
+                confirmButtonColor: '#4f46e5', cancelButtonColor: '#94a3b8', confirmButtonText: 'Ya, Logout',
+                customClass: { confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-md hover:bg-indigo-700 w-full sm:w-auto', cancelButton: 'rounded-xl px-6 py-3 font-bold hover:bg-slate-500 w-full sm:w-auto mt-2 sm:mt-0', popup: 'rounded-[2rem] p-6' }
             }).then((result) => {
                 if (result.isConfirmed) {
                     currentUser = null;
                     document.getElementById('login-screen').classList.remove('hidden');
                     document.getElementById('main-layout').classList.add('hidden');
-                    document.getElementById('login-nip').value = '';
-                    document.getElementById('login-pass').value = '';
                 }
             });
         }
@@ -325,88 +263,44 @@
         function initApp() {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('main-layout').classList.remove('hidden');
-            
             document.getElementById('user-photo-sidebar').src = getAvatar(currentUser.nama, currentUser.foto);
             document.getElementById('user-name-sidebar').innerText = currentUser.nama;
             document.getElementById('user-role-badge').innerText = currentUser.role;
-
             document.getElementById('mobile-top-user-photo').src = getAvatar(currentUser.nama, currentUser.foto);
             document.getElementById('mobile-top-user-role').innerText = currentUser.role;
-
             renderMenu();
             renderPage('dashboard');
         }
 
-        function resetAndGoToInput() { editingJournalData = null; renderPage('input-jurnal'); }
-
         function renderMenu() {
             const deskNav = document.getElementById('desktop-nav-menu');
             const mobNav = document.getElementById('mobile-nav-menu');
-            
             let menus = [ { id: 'dashboard', label: 'Dashboard Utama', short: 'Beranda', icon: 'fa-chart-pie', action: "renderPage('dashboard')" } ];
-
-            if (currentUser.role === 'Admin') {
-                menus.push({ id: 'manage-users', label: 'Kelola Anggota', short: 'Anggota', icon: 'fa-users-cog', action: "renderPage('manage-users')" });
-            }
-            if (currentUser.role === 'Guru' || currentUser.role === 'Kepsek') {
-                menus.push({ id: 'input-jurnal', label: currentUser.role === 'Kepsek' ? 'Isi Jurnal Kepsek' : 'Isi Jurnal Baru', short: 'Isi Jurnal', icon: 'fa-pen-to-square', action: "resetAndGoToInput()" });
-            }
+            if (currentUser.role === 'Admin') menus.push({ id: 'manage-users', label: 'Kelola Anggota', short: 'Anggota', icon: 'fa-users-cog', action: "renderPage('manage-users')" });
+            if (currentUser.role === 'Guru' || currentUser.role === 'Kepsek') menus.push({ id: 'input-jurnal', label: currentUser.role === 'Kepsek' ? 'Isi Jurnal Kepsek' : 'Isi Jurnal Baru', short: 'Isi Jurnal', icon: 'fa-pen-to-square', action: "resetAndGoToInput()" });
             menus.push({ id: 'profile', label: 'Pengaturan Profil', short: 'Profil', icon: 'fa-user-shield', action: "renderPage('profile')" });
 
-            deskNav.innerHTML = menus.map(m => `
-                <button onclick="${m.action}" id="btn-desktop-${m.id}" title="${m.label}" class="w-full flex items-center justify-start space-x-4 py-3.5 px-4 text-slate-400 hover:bg-slate-800/80 hover:text-slate-100 rounded-2xl transition-all duration-300 nav-btn-desktop font-semibold group relative overflow-hidden border-l-4 border-transparent">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-800/80 text-current icon-container transition-all duration-300 group-hover:scale-110 group-hover:text-indigo-400 group-hover:bg-slate-700 shadow-inner">
-                        <i class="fas ${m.icon} text-[16px]"></i>
-                    </div>
-                    <span class="text-[14px] tracking-wide">${m.label}</span>
-                </button>
-            `).join('');
-
-            mobNav.innerHTML = menus.map(m => `
-                <button onclick="${m.action}" id="btn-mobile-${m.id}" class="relative flex-1 h-full flex flex-col items-center justify-center group nav-btn-mobile transition-all duration-300 outline-none">
-                    <div class="mobile-icon-wrap w-11 h-11 rounded-[14px] flex items-center justify-center text-slate-400 bg-transparent transition-all duration-300 z-10 relative">
-                        <i class="fas ${m.icon} text-[18px]"></i>
-                    </div>
-                    <span class="mobile-label absolute bottom-1.5 text-[10px] font-bold text-slate-400 opacity-0 transform translate-y-2 transition-all duration-300 whitespace-nowrap">${m.short}</span>
-                </button>
-            `).join('');
+            deskNav.innerHTML = menus.map(m => `<button onclick="${m.action}" id="btn-desktop-${m.id}" class="w-full flex items-center justify-start space-x-4 py-3.5 px-4 text-slate-400 hover:bg-slate-800/80 hover:text-slate-100 rounded-2xl transition-all duration-300 nav-btn-desktop font-semibold group relative overflow-hidden border-l-4 border-transparent"><div class="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-800/80 icon-container"><i class="fas ${m.icon}"></i></div><span>${m.label}</span></button>`).join('');
+            mobNav.innerHTML = menus.map(m => `<button onclick="${m.action}" id="btn-mobile-${m.id}" class="relative flex-1 h-full flex flex-col items-center justify-center nav-btn-mobile transition-all duration-300 outline-none"><div class="mobile-icon-wrap w-11 h-11 rounded-[14px] flex items-center justify-center text-slate-400 transition-all duration-300 z-10 relative"><i class="fas ${m.icon} text-[18px]"></i></div><span class="mobile-label absolute bottom-1.5 text-[10px] font-bold text-slate-400 opacity-0 transition-all duration-300 whitespace-nowrap">${m.short}</span></button>`).join('');
         }
 
         function renderPage(page) {
-            activePage = page;
             const container = document.getElementById('content-container');
-            
             document.querySelectorAll('.nav-btn-desktop').forEach(btn => btn.classList.remove('sidebar-item-active'));
             document.querySelectorAll('.nav-btn-mobile').forEach(btn => btn.classList.remove('mobile-item-active'));
-            
-            const activeDesktop = document.getElementById('btn-desktop-' + page);
-            if(activeDesktop) activeDesktop.classList.add('sidebar-item-active');
-
-            const activeMobile = document.getElementById('btn-mobile-' + page);
-            if(activeMobile) activeMobile.classList.add('mobile-item-active');
-
+            if(document.getElementById('btn-desktop-'+page)) document.getElementById('btn-desktop-'+page).classList.add('sidebar-item-active');
+            if(document.getElementById('btn-mobile-'+page)) document.getElementById('btn-mobile-'+page).classList.add('mobile-item-active');
             document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
-
-            container.style.opacity = 0;
-            container.style.transform = 'translateY(10px)';
-            
-            setTimeout(() => {
-                if (page === 'dashboard') renderDashboard(container);
-                else if (page === 'input-jurnal') renderInputJurnal(container);
-                else if (page === 'manage-users') renderManageUsers(container);
-                else if (page === 'profile') renderProfile(container);
-
-                container.style.transition = 'all 0.3s ease';
-                container.style.opacity = 1;
-                container.style.transform = 'translateY(0)';
-            }, 50);
+            if (page === 'dashboard') renderDashboard(container);
+            else if (page === 'input-jurnal') renderInputJurnal(container);
+            else if (page === 'manage-users') renderManageUsers(container);
+            else if (page === 'profile') renderProfile(container);
         }
 
         function renderDashboard(container, filteredData = null, filterState = {}) {
             let dataToShow = filteredData || journalsData;
             if (!filteredData && currentUser.role === 'Guru') dataToShow = journalsData.filter(j => j.nip_user === currentUser.nip);
             currentFilteredJournals = dataToShow; 
-
             const totalJurnal = currentFilteredJournals.length;
             let totalJam = 0, totalHadirSiswa = 0;
             currentFilteredJournals.forEach(j => {
@@ -418,97 +312,44 @@
             });
 
             container.innerHTML = `
-                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 md:mb-8 gap-4 md:gap-5">
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4">
                     <div class="w-full lg:w-auto text-center lg:text-left">
                         <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">Dashboard Jurnal</h1>
-                        <p class="text-[12px] md:text-sm text-slate-500 mt-1 font-medium">Pantau aktivitas mengajar harian</p>
+                        <p class="text-[12px] md:text-sm text-slate-500 font-medium">Pantau aktivitas mengajar harian</p>
                     </div>
                     <div class="grid grid-cols-2 md:flex gap-3 w-full lg:w-auto">
-                        <button onclick="handlePrintDialog()" class="action-btn bg-white border border-slate-200 text-slate-700 px-4 py-3 md:py-2.5 rounded-xl hover:border-indigo-300 hover:text-indigo-600 text-[13px] md:text-sm font-bold flex items-center justify-center gap-2 shadow-sm">
-                            <i class="fas fa-print"></i> Cetak Laporan
-                        </button>
-                        <button onclick="exportToExcel()" class="action-btn bg-white border border-slate-200 text-slate-700 px-4 py-3 md:py-2.5 rounded-xl hover:border-emerald-300 hover:text-emerald-600 text-[13px] md:text-sm font-bold flex items-center justify-center gap-2 shadow-sm">
-                            <i class="fas fa-file-excel"></i> Export Excel
-                        </button>
-                        ${currentUser.role === 'Admin' ? `
-                            <button onclick="handleBulkDelete()" class="col-span-2 md:col-span-1 action-btn bg-rose-50 border border-rose-100 text-rose-600 px-4 py-3 md:py-2.5 rounded-xl hover:bg-rose-100 hover:border-rose-200 text-[13px] md:text-sm font-bold flex items-center justify-center gap-2 shadow-sm">
-                                <i class="fas fa-trash-alt"></i> Hapus Data
-                            </button>
-                        ` : ''}
+                        <button onclick="handlePrintDialog()" class="action-btn bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-sm"><i class="fas fa-print"></i> Cetak</button>
+                        <button onclick="exportToExcel()" class="action-btn bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-sm"><i class="fas fa-file-excel"></i> Excel</button>
+                        ${currentUser.role === 'Admin' ? `<button onclick="handleBulkDelete()" class="col-span-2 md:col-span-1 action-btn bg-rose-50 border border-rose-100 text-rose-600 px-4 py-2.5 rounded-xl font-bold shadow-sm"><i class="fas fa-trash-alt"></i> Hapus Data</button>` : ''}
                     </div>
                 </div>
-
-                <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 mb-6 md:mb-8">
-                    <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl md:rounded-[1.5rem] p-4 md:p-6 shadow-md shadow-indigo-200 text-white relative overflow-hidden group col-span-1">
-                        <div class="absolute -right-2 -bottom-2 text-white/10 group-hover:scale-110 transition-transform duration-500"><i class="fas fa-book text-6xl md:text-8xl"></i></div>
-                        <div class="relative z-10">
-                            <h3 class="text-indigo-100 text-[10px] md:text-[13px] font-bold uppercase tracking-wider mb-1 md:mb-2">Total Entri</h3>
-                            <p class="text-3xl md:text-4xl font-extrabold">${totalJurnal}</p>
-                        </div>
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
+                    <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl p-4 md:p-6 text-white relative overflow-hidden">
+                        <h3 class="text-indigo-100 text-[10px] font-bold uppercase tracking-wider mb-1">Total Entri</h3>
+                        <p class="text-3xl md:text-4xl font-extrabold">${totalJurnal}</p>
                     </div>
-                    <div class="bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl md:rounded-[1.5rem] p-4 md:p-6 shadow-md shadow-emerald-200 text-white relative overflow-hidden group col-span-1">
-                        <div class="absolute -right-2 -bottom-2 text-white/10 group-hover:scale-110 transition-transform duration-500"><i class="fas fa-clock text-6xl md:text-8xl"></i></div>
-                        <div class="relative z-10">
-                            <h3 class="text-emerald-100 text-[10px] md:text-[13px] font-bold uppercase tracking-wider mb-1 md:mb-2">Total Jam (JP)</h3>
-                            <p class="text-3xl md:text-4xl font-extrabold">${totalJam}</p>
-                        </div>
+                    <div class="bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl p-4 md:p-6 text-white relative overflow-hidden">
+                        <h3 class="text-emerald-100 text-[10px] font-bold uppercase tracking-wider mb-1">Total Jam (JP)</h3>
+                        <p class="text-3xl md:text-4xl font-extrabold">${totalJam}</p>
                     </div>
-                    <div class="bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl md:rounded-[1.5rem] p-4 md:p-6 shadow-md shadow-amber-200 text-white relative overflow-hidden group col-span-2 lg:col-span-1">
-                        <div class="absolute -right-2 -bottom-4 text-white/10 group-hover:scale-110 transition-transform duration-500"><i class="fas fa-users text-7xl md:text-8xl"></i></div>
-                        <div class="relative z-10 flex flex-row lg:flex-col justify-between items-center lg:items-start">
-                            <h3 class="text-orange-100 text-[11px] md:text-[13px] font-bold uppercase tracking-wider">Akumulasi Siswa Hadir</h3>
-                            <p class="text-3xl md:text-4xl font-extrabold">${totalHadirSiswa}</p>
-                        </div>
+                    <div class="bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl p-4 md:p-6 text-white relative overflow-hidden col-span-2 lg:col-span-1">
+                        <h3 class="text-orange-100 text-[11px] font-bold uppercase tracking-wider mb-1">Akumulasi Hadir</h3>
+                        <p class="text-3xl md:text-4xl font-extrabold">${totalHadirSiswa}</p>
                     </div>
                 </div>
-
-                <div class="bg-white p-5 md:p-6 rounded-2xl md:rounded-[1.5rem] shadow-sm border border-slate-100 mb-6 md:mb-8 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-1.5 h-full bg-indigo-500"></div>
-                    <div class="flex items-center gap-2 md:gap-3 mb-4 md:mb-5 pl-2">
-                        <div class="bg-indigo-50 text-indigo-600 w-7 h-7 md:w-8 md:h-8 rounded-lg flex items-center justify-center"><i class="fas fa-filter text-xs md:text-sm"></i></div>
-                        <h3 class="font-bold text-slate-700 text-[13px] md:text-base">Filter Pencarian</h3>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 ${currentUser.role === 'Guru' ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-3 md:gap-5 items-end pl-2">
-                        <div>
-                            <label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">Dari Tanggal</label>
-                            <input type="date" id="filter-start" value="${filterState.start || ''}" class="w-full px-3 md:px-4 py-2.5 border border-slate-200 rounded-xl text-[13px] md:text-sm focus:bg-white bg-slate-50 text-slate-700 font-medium">
-                        </div>
-                        <div>
-                            <label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">Sampai Tanggal</label>
-                            <input type="date" id="filter-end" value="${filterState.end || ''}" class="w-full px-3 md:px-4 py-2.5 border border-slate-200 rounded-xl text-[13px] md:text-sm focus:bg-white bg-slate-50 text-slate-700 font-medium">
-                        </div>
-                        ${currentUser.role !== 'Guru' ? `
-                        <div>
-                            <label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">Nama Guru</label>
-                            <div class="relative group">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors"><i class="fas fa-search text-xs"></i></span>
-                                <input type="text" id="filter-name" value="${filterState.name || ''}" placeholder="Ketik nama..." class="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-xl text-[13px] md:text-sm focus:bg-white bg-slate-50 text-slate-700 placeholder-slate-400 font-medium">
-                            </div>
-                        </div>
-                        ` : ''}
-                        <div class="flex gap-2 md:gap-3">
-                            <button onclick="applyFilters()" class="flex-1 bg-indigo-600 text-white px-3 md:px-5 py-2.5 rounded-xl hover:bg-indigo-700 font-bold shadow-md shadow-indigo-600/20 active:scale-95 flex items-center justify-center text-[12px] md:text-sm transition-transform">Terapkan</button>
-                            <button onclick="resetFilters()" class="flex-1 bg-white text-slate-600 px-3 md:px-5 py-2.5 rounded-xl hover:bg-slate-50 font-bold active:scale-95 border border-slate-200 flex items-center justify-center text-[12px] md:text-sm transition-transform">Reset</button>
-                        </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 mb-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 ${currentUser.role === 'Guru' ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-4 items-end">
+                        <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1.5 pl-1">Dari</label><input type="date" id="filter-start" value="${filterState.start || ''}" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:bg-white bg-slate-50"></div>
+                        <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1.5 pl-1">Sampai</label><input type="date" id="filter-end" value="${filterState.end || ''}" class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:bg-white bg-slate-50"></div>
+                        ${currentUser.role !== 'Guru' ? `<div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1.5 pl-1">Guru</label><input type="text" id="filter-name" value="${filterState.name || ''}" placeholder="Nama..." class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:bg-white bg-slate-50"></div>` : ''}
+                        <div class="flex gap-2"><button onclick="applyFilters()" class="flex-1 bg-indigo-600 text-white py-2.5 rounded-xl font-bold active:scale-95">Terapkan</button><button onclick="resetFilters()" class="flex-1 bg-slate-100 text-slate-600 py-2.5 rounded-xl font-bold active:scale-95">Reset</button></div>
                     </div>
                 </div>
-
-                <div class="bg-white rounded-2xl md:rounded-[1.5rem] shadow-sm border border-slate-100 overflow-hidden flex flex-col max-h-[500px]">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col max-h-[500px]">
                     <div class="overflow-x-auto overflow-y-auto flex-1 custom-scroll relative">
                         <table class="w-full text-left border-collapse whitespace-nowrap min-w-[800px]">
-                            <thead class="sticky top-0 z-20">
-                                <tr class="bg-white/90 backdrop-blur-md text-slate-500 text-[10px] md:text-[11px] uppercase tracking-wider border-b border-slate-200 shadow-sm">
-                                    <th class="p-4 md:p-5 font-extrabold w-32">Waktu</th>
-                                    <th class="p-4 md:p-5 font-extrabold">Guru Pengajar</th>
-                                    <th class="p-4 md:p-5 font-extrabold">Kegiatan / Materi</th>
-                                    <th class="p-4 md:p-5 font-extrabold text-center w-24">Kelas</th>
-                                    <th class="p-4 md:p-5 font-extrabold text-center w-24">Dok.</th>
-                                    <th class="p-4 md:p-5 font-extrabold text-center w-32">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="journal-list-body" class="divide-y divide-slate-100/80">
-                                ${renderJournalRows(dataToShow)}
-                            </tbody>
+                            <thead class="sticky top-0 z-20"><tr class="bg-white/90 backdrop-blur-md text-slate-500 text-[10px] uppercase tracking-wider border-b border-slate-200"><th class="p-4 font-extrabold">Waktu</th><th class="p-4 font-extrabold">Guru</th><th class="p-4 font-extrabold">Kegiatan</th><th class="p-4 font-extrabold text-center">Kelas</th><th class="p-4 font-extrabold text-center">Aksi</th></tr></thead>
+                            <tbody id="journal-list-body" class="divide-y divide-slate-100">${renderJournalRows(dataToShow)}</tbody>
                         </table>
                     </div>
                 </div>
@@ -516,55 +357,25 @@
         }
 
         function renderJournalRows(data) {
-            const sorted = [...data].sort((a, b) => {
-                const dateA = new Date(a.tanggal);
-                const dateB = new Date(b.tanggal);
-                if (dateA > dateB) return -1;
-                if (dateA < dateB) return 1;
-                return (parseInt(b.jam_mulai) || 0) - (parseInt(a.jam_mulai) || 0);
-            });
-            if(sorted.length === 0) return `<tr><td colspan="6" class="p-16 text-center text-slate-400 font-medium"><div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100"><i class="fas fa-folder-open text-2xl text-slate-300"></i></div>Belum ada data jurnal ditemukan.</td></tr>`;
-            
+            const sorted = [...data].sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+            if(sorted.length === 0) return `<tr><td colspan="5" class="p-16 text-center text-slate-400 font-medium">Belum ada data.</td></tr>`;
             return sorted.map(j => `
-                <tr class="hover:bg-slate-50/60 transition-colors group">
-                    <td class="p-4 md:p-5 align-top">
-                        <div class="font-bold text-slate-800 text-[13px] md:text-sm">${formatDate(j.tanggal)}</div>
-                        <div class="text-[10px] md:text-[11px] text-indigo-600 bg-indigo-50 inline-flex items-center px-2 py-0.5 rounded border border-indigo-100 mt-2 font-bold">
-                            <i class="far fa-clock mr-1.5"></i> Jam: ${j.jam_mulai}-${j.jam_selesai}
-                        </div>
+                <tr class="hover:bg-slate-50/60 transition-colors">
+                    <td class="p-4 align-top">
+                        <div class="font-bold text-slate-800 text-[13px]">${formatDate(j.tanggal)}</div>
+                        <div class="text-[10px] text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100 mt-2 inline-block font-bold">Jam: ${j.jam_mulai}-${j.jam_selesai}</div>
                     </td>
-                    <td class="p-4 md:p-5 align-top">
+                    <td class="p-4 align-top">
                         <div class="flex items-center gap-3">
-                            <img src="${getAvatar(j.nama_user, usersData.find(u => u.nip === j.nip_user)?.foto)}" class="w-9 h-9 md:w-10 md:h-10 rounded-full border border-slate-200 shadow-sm object-cover bg-white">
-                            <div>
-                                <span class="block text-[13px] md:text-sm font-extrabold text-slate-700">${j.nama_user}</span>
-                                <span class="block text-[10px] md:text-[11px] text-slate-400 font-bold mt-0.5">${j.nip_user}</span>
-                            </div>
+                            <img src="${getAvatar(j.nama_user, usersData.find(u => u.nip === j.nip_user)?.foto)}" class="w-9 h-9 rounded-full object-cover">
+                            <span class="text-[13px] font-extrabold text-slate-700">${j.nama_user}</span>
                         </div>
                     </td>
-                    <td class="p-4 md:p-5 align-top">
-                        <p class="max-w-[250px] md:max-w-[300px] whitespace-normal text-[13px] md:text-sm text-slate-600 leading-relaxed line-clamp-2 font-medium" title="${j.uraian}">${j.uraian}</p>
-                    </td>
-                    <td class="p-4 md:p-5 align-top text-center">
-                        <span class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-[10px] md:text-[11px] font-bold uppercase tracking-widest inline-block border border-slate-200/60">${j.kelas || '-'}</span>
-                    </td>
-                    <td class="p-4 md:p-5 align-top text-center">
-                        ${j.foto ? `
-                            <div class="relative inline-block group/img">
-                                <img src="${j.foto}" class="w-10 h-10 md:w-12 md:h-12 rounded-xl object-cover cursor-pointer transition-all duration-300 border border-slate-200 shadow-sm group-hover/img:shadow-md group-hover/img:border-indigo-300 bg-white p-0.5" onclick="previewImage('${j.foto}')">
-                            </div>
-                        ` : '<span class="text-slate-400 italic text-[10px] md:text-xs font-bold bg-slate-50 px-2 py-1.5 rounded-lg border border-slate-100">Kosong</span>'}
-                    </td>
-                    <td class="p-4 md:p-5 align-top text-center">
+                    <td class="p-4 align-top"><p class="max-w-[300px] whitespace-normal text-[13px] text-slate-600 leading-relaxed line-clamp-2">${j.uraian}</p></td>
+                    <td class="p-4 align-top text-center"><span class="px-2 py-1 rounded-lg bg-slate-100 text-slate-700 text-[10px] font-bold uppercase">${j.kelas || '-'}</span></td>
+                    <td class="p-4 align-top text-center">
                         <div class="flex justify-center gap-2">
-                            ${(currentUser.role === 'Admin' || currentUser.nip === j.nip_user) ? `
-                            <button onclick="editJournalEntry('${j.id}')" class="bg-white border border-slate-200 text-slate-500 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 w-8 h-8 md:w-9 md:h-9 rounded-xl flex items-center justify-center transition-all shadow-sm active:scale-90">
-                                <i class="fas fa-pen text-[12px] md:text-[13px]"></i>
-                            </button>
-                            <button onclick="deleteIndividualJournal('${j.id}')" class="bg-white border border-slate-200 text-slate-500 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 w-8 h-8 md:w-9 md:h-9 rounded-xl flex items-center justify-center transition-all shadow-sm active:scale-90">
-                                <i class="fas fa-trash text-[12px] md:text-[13px]"></i>
-                            </button>
-                            ` : '<span class="text-slate-300 text-xs">-</span>'}
+                            ${(currentUser.role === 'Admin' || currentUser.nip === j.nip_user) ? `<button onclick="editJournalEntry('${j.id}')" class="bg-white border border-slate-200 text-slate-500 w-8 h-8 rounded-xl flex items-center justify-center active:scale-90"><i class="fas fa-pen text-[12px]"></i></button><button onclick="deleteIndividualJournal('${j.id}')" class="bg-white border border-slate-200 text-rose-500 w-8 h-8 rounded-xl flex items-center justify-center active:scale-90"><i class="fas fa-trash text-[12px]"></i></button>` : '-'}
                         </div>
                     </td>
                 </tr>
@@ -574,283 +385,46 @@
         function formatDate(d) {
             if (!d) return '-';
             const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-            if (typeof d === 'string' && d.includes('-') && !d.includes('T')) {
-                const parts = d.split('-');
-                if (parts.length === 3) return new Date(parts[0], parseInt(parts[1]) - 1, parts[2]).toLocaleDateString('id-ID', options);
-            }
+            const parts = d.split('-');
+            if (parts.length === 3) return new Date(parts[0], parseInt(parts[1]) - 1, parts[2]).toLocaleDateString('id-ID', options);
             return new Date(d).toLocaleDateString('id-ID', options);
         }
 
-        function previewImage(src) {
-            Swal.fire({
-                imageUrl: src, imageAlt: 'Dokumentasi', showConfirmButton: false, width: 'auto',
-                background: 'transparent', backdrop: 'rgba(15, 23, 42, 0.95)',
-                customClass: { image: 'rounded-2xl max-w-[90vw] md:max-w-full max-h-[80vh] object-contain shadow-2xl border border-slate-700/50' }
-            });
-        }
-
-        function applyFilters() {
-            const start = document.getElementById('filter-start').value;
-            const end = document.getElementById('filter-end').value;
-            const nameInput = document.getElementById('filter-name');
-            const name = nameInput ? nameInput.value.toLowerCase() : '';
-
-            let filtered = journalsData;
-            if(currentUser.role === 'Guru') filtered = filtered.filter(j => j.nip_user === currentUser.nip);
-
-            if(start) filtered = filtered.filter(j => j.tanggal >= start);
-            if(end) filtered = filtered.filter(j => j.tanggal <= end);
-            if(name) filtered = filtered.filter(j => j.nama_user.toLowerCase().includes(name));
-
-            const filterState = { start: start, end: end, name: nameInput ? nameInput.value : '' };
-            renderDashboard(document.getElementById('content-container'), filtered, filterState);
-        }
-
-        function resetFilters() { renderDashboard(document.getElementById('content-container')); }
-
-        function exportToExcel() {
-            if (currentFilteredJournals.length === 0) return notify('Tidak ada data untuk di-export', 'warning');
-            const dataToExport = currentFilteredJournals.map((j, index) => ({
-                'No': index + 1, 'Tanggal': j.tanggal, 'Nama Guru': j.nama_user, 'NIP': j.nip_user, 'Mulai Jam Ke': j.jam_mulai, 'Selesai Jam Ke': j.jam_selesai, 'Kelas/Kategori': j.kelas, 'Uraian Kegiatan': j.uraian, 'Hadir': j.jml_hadir, 'Sakit': j.abs_sakit, 'Ijin': j.abs_ijin, 'Alpha': j.abs_alpha
-            }));
-            const ws = XLSX.utils.json_to_sheet(dataToExport);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Data Jurnal");
-            XLSX.writeFile(wb, `Export_Jurnal_SIJARI_${new Date().toISOString().split('T')[0]}.xlsx`);
-            notify('Data berhasil di-export ke Excel');
-        }
-
-        function editJournalEntry(id) {
-            const entry = journalsData.find(j => String(j.id) === String(id));
-            if(entry) { editingJournalData = entry; renderPage('input-jurnal'); } 
-            else { notify('Data jurnal tidak ditemukan.', 'error'); }
-        }
-
-        function deleteIndividualJournal(id) {
-            Swal.fire({
-                title: 'Hapus Jurnal?', text: "Data ini tidak dapat dikembalikan!", icon: 'warning', showCancelButton: true,
-                confirmButtonColor: '#e11d48', cancelButtonColor: '#94a3b8', confirmButtonText: 'Ya, Hapus!', cancelButtonText: 'Batal',
-                customClass: { confirmButton: 'rounded-xl px-6 py-2.5 font-bold shadow-md hover:bg-rose-700', cancelButton: 'rounded-xl px-6 py-2.5 font-bold hover:bg-slate-500', popup: 'rounded-3xl p-4' }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    showLoader(true);
-                    if (IS_PREVIEW) {
-                        setTimeout(() => {
-                            journalsData = journalsData.filter(j => String(j.id) !== String(id));
-                            applyFilters(); showLoader(false); notify('Jurnal berhasil dihapus');
-                        }, 1000);
-                    } else {
-                        deleteDoc(doc(db, "journals", String(id))).then(() => {
-                            journalsData = journalsData.filter(j => String(j.id) !== String(id));
-                            applyFilters(); showLoader(false); notify('Jurnal berhasil dihapus');
-                        }).catch(err => {
-                            showLoader(false); notify(err.message, 'error');
-                        });
-                    }
-                }
-            });
-        }
-
-        function renderInputJurnal(container) {
-            const isGuru = currentUser.role === 'Guru';
-            const titleText = editingJournalData ? 'Edit Data Jurnal' : (currentUser.role === 'Kepsek' ? 'Isi Jurnal Kepsek' : 'Isi Jurnal Harian');
-            const subTitle = editingJournalData ? 'Ubah informasi jurnal yang telah disimpan.' : 'Lengkapi formulir secara detail.';
-            const btnText = editingJournalData ? '<i class="fas fa-save"></i> SIMPAN PERUBAHAN' : '<i class="fas fa-paper-plane"></i> SUBMIT JURNAL';
+        function printReport(dataToPrint, filterNipGuru = null) {
+            if (!dataToPrint || dataToPrint.length === 0) return notify('Tidak ada data.', 'warning');
+            const kepsek = { nama: 'Ni Kadek Yadnyani, S.Pd', nip: '197910162006042006' };
+            let gName = currentUser.nama, gNip = currentUser.nip, isK = (currentUser.role === 'Kepsek');
+            if (filterNipGuru) {
+                const u = usersData.find(x => x.nip === filterNipGuru);
+                if (u) { gName = u.nama; gNip = u.nip; if (u.role === 'Kepsek') isK = true; }
+            }
+            const sorted = [...dataToPrint].sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+            let tableRows = sorted.map((j, i) => `<tr><td class="center">${i+1}</td><td>${formatDate(j.tanggal)}</td><td class="center">${j.jam_mulai}-${j.jam_selesai}</td><td>${j.uraian}</td><td class="center">${j.foto ? 'Ada' : '-'}</td></tr>`).join('');
             
-            container.innerHTML = `
-                <div class="max-w-3xl mx-auto bg-white p-5 md:p-10 rounded-2xl md:rounded-[1.5rem] shadow-sm border border-slate-100 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 to-violet-500"></div>
-                    
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8 border-b border-slate-100 pb-5">
-                        <div class="flex items-center gap-3 md:gap-4">
-                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-[14px] bg-indigo-50 flex items-center justify-center text-indigo-600">
-                                <i class="fas ${editingJournalData ? 'fa-edit' : 'fa-pen-nib'} text-lg md:text-xl"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-xl md:text-2xl font-extrabold text-slate-800 tracking-tight">${titleText}</h2>
-                                <p class="text-[11px] md:text-[13px] text-slate-500 mt-0.5 font-medium">${subTitle}</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-2">
-                            ${(currentUser.role === 'Kepsek' && !editingJournalData) ? `
-                            <button type="button" onclick="handlePrintDialog()" class="action-btn flex-1 bg-white border border-indigo-200 text-indigo-600 px-4 py-2 md:py-2.5 rounded-xl hover:bg-indigo-50 text-[12px] md:text-sm font-bold flex items-center justify-center gap-2 shadow-sm">
-                                <i class="fas fa-print"></i> Cetak
-                            </button>
-                            ` : ''}
-                            ${editingJournalData ? `
-                            <button type="button" onclick="resetAndGoToInput()" class="action-btn flex-1 bg-white border border-slate-200 text-slate-600 px-4 py-2 md:py-2.5 rounded-xl hover:bg-slate-50 text-[12px] md:text-sm font-bold flex items-center justify-center gap-2 shadow-sm">
-                                <i class="fas fa-times"></i> Batal Edit
-                            </button>
-                            ` : ''}
-                        </div>
+            const html = `
+                <div id="sijari-print-area">
+                    <div style="text-align: center; margin-bottom: 20px;"><img src="${PRINT_KOP}" style="width: 100%;"></div>
+                    <h2 style="text-align: center; font-weight: bold; text-transform: uppercase;">JURNAL KEGIATAN BELAJAR MENGAJAR</h2>
+                    <table class="data">
+                        <thead><tr><th>No</th><th>Hari/Tanggal</th><th>Jam Ke</th><th>Uraian Kegiatan</th><th>Dok.</th></tr></thead>
+                        <tbody>${tableRows}</tbody>
+                    </table>
+                    <div style="margin-top: 40px; display: flex; justify-content: space-between;">
+                        <div style="text-align: center; width: 45%;">Mengetahui,<br>Kepala Sekolah<br><br><br><br><b>${kepsek.nama}</b><br>NIP. ${kepsek.nip}</div>
+                        <div style="text-align: center; width: 45%;">Dawan, ${new Date().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}<br>Guru Pengajar<br><br><br><br><b>${gName}</b><br>NIP. ${gNip}</div>
                     </div>
-
-                    <form id="journal-form" class="space-y-4 md:space-y-6">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 pl-1">Hari / Tanggal</label>
-                                <input type="date" id="f-tgl" required class="w-full px-3 md:px-4 py-3 md:py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none text-[13px] md:text-sm text-slate-700 transition-all font-bold">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 pl-1">Kelas / Kategori</label>
-                                <select id="f-kelas" required onchange="handleKelasChange()" class="w-full px-3 md:px-4 py-3 md:py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none text-[13px] md:text-sm text-slate-700 transition-all cursor-pointer font-bold">
-                                    ${isGuru ? `
-                                        <option value="" disabled selected>-- Pilih Kelas --</option>
-                                        <option value="Umum">Kegiatan Umum / Lainnya</option>
-                                        <option value="Istirahat">Waktu Istirahat</option>
-                                        <optgroup label="Kelas 7">
-                                            <option value="7A">Kelas 7A</option><option value="7B">Kelas 7B</option><option value="7C">Kelas 7C</option><option value="7D">Kelas 7D</option><option value="7E">Kelas 7E</option><option value="7F">Kelas 7F</option><option value="7G">Kelas 7G</option>
-                                        </optgroup>
-                                        <optgroup label="Kelas 8">
-                                            <option value="8A">Kelas 8A</option><option value="8B">Kelas 8B</option><option value="8C">Kelas 8C</option><option value="8D">Kelas 8D</option><option value="8E">Kelas 8E</option><option value="8F">Kelas 8F</option><option value="8G">Kelas 8G</option>
-                                        </optgroup>
-                                        <optgroup label="Kelas 9">
-                                            <option value="9A">Kelas 9A</option><option value="9B">Kelas 9B</option><option value="9C">Kelas 9C</option><option value="9D">Kelas 9D</option><option value="9E">Kelas 9E</option><option value="9F">Kelas 9F</option><option value="9G">Kelas 9G</option>
-                                        </optgroup>
-                                    ` : `<option value="" disabled selected>-- Pilih Kegiatan --</option><option value="Umum">Kegiatan Umum</option><option value="Istirahat">Waktu Istirahat</option>`}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4 md:gap-6">
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 pl-1">Mulai Jam ke-</label>
-                                <select id="f-jam-mulai" class="w-full px-3 md:px-4 py-3 md:py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none text-[13px] md:text-sm text-slate-700 transition-all cursor-pointer font-bold">
-                                    ${[...Array(10).keys()].map(i => `<option value="${i}">Jam ke-${i}</option>`).join('')}
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 pl-1">Sampai Jam ke-</label>
-                                <select id="f-jam-selesai" class="w-full px-3 md:px-4 py-3 md:py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none text-[13px] md:text-sm text-slate-700 transition-all cursor-pointer font-bold">
-                                    ${[...Array(10).keys()].map(i => `<option value="${i}">Jam ke-${i}</option>`).join('')}
-                                </select>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 pl-1">Uraian Kegiatan / Materi</label>
-                            <textarea id="f-uraian" rows="4" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none text-[13px] md:text-sm text-slate-700 transition-all resize-none font-bold leading-relaxed" placeholder="Tuliskan secara spesifik detail kegiatan..."></textarea>
-                        </div>
-
-                        ${isGuru ? `
-                            <div id="container-kehadiran" class="bg-slate-50/80 p-4 md:p-5 rounded-2xl border border-slate-200/60 transition-all duration-300">
-                                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-3 pl-1">Status Kehadiran Siswa</label>
-                                <div class="grid grid-cols-4 gap-3 md:gap-4">
-                                    <div class="col-span-2 sm:col-span-1">
-                                        <label class="block text-[10px] md:text-[11px] font-extrabold text-emerald-600 mb-1.5 pl-1">Hadir</label>
-                                        <input type="number" id="f-hadir" value="0" min="0" class="w-full p-3 border border-slate-200 rounded-xl text-sm md:text-base focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none text-center bg-white font-black text-slate-700 shadow-sm transition-all">
-                                    </div>
-                                    <div class="col-span-2 sm:col-span-1">
-                                        <label class="block text-[10px] md:text-[11px] font-extrabold text-amber-500 mb-1.5 pl-1">Sakit</label>
-                                        <input type="number" id="f-sakit" value="0" min="0" class="w-full p-3 border border-slate-200 rounded-xl text-sm md:text-base focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 outline-none text-center bg-white font-black text-slate-700 shadow-sm transition-all">
-                                    </div>
-                                    <div class="col-span-2 sm:col-span-1">
-                                        <label class="block text-[10px] md:text-[11px] font-extrabold text-indigo-500 mb-1.5 pl-1">Ijin</label>
-                                        <input type="number" id="f-ijin" value="0" min="0" class="w-full p-3 border border-slate-200 rounded-xl text-sm md:text-base focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none text-center bg-white font-black text-slate-700 shadow-sm transition-all">
-                                    </div>
-                                    <div class="col-span-2 sm:col-span-1">
-                                        <label class="block text-[10px] md:text-[11px] font-extrabold text-rose-500 mb-1.5 pl-1">Alpha</label>
-                                        <input type="number" id="f-alpha" value="0" min="0" class="w-full p-3 border border-slate-200 rounded-xl text-sm md:text-base focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 outline-none text-center bg-white font-black text-slate-700 shadow-sm transition-all">
-                                    </div>
-                                </div>
-                            </div>
-                        ` : ''}
-
-                        <div id="container-foto" class="transition-all duration-300">
-                            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 pl-1">Foto Dokumentasi</label>
-                            <div class="flex items-center justify-center w-full">
-                                <label class="flex flex-col items-center justify-center w-full h-32 md:h-40 border-[2.5px] border-dashed border-indigo-200 rounded-2xl cursor-pointer hover:bg-indigo-50 hover:border-indigo-400 transition-all bg-slate-50 group">
-                                    <div class="flex flex-col items-center justify-center px-4 text-center">
-                                        <div class="w-12 h-12 md:w-14 md:h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-2 md:mb-3 text-indigo-500 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
-                                            <i class="fas fa-camera text-xl md:text-2xl"></i>
-                                        </div>
-                                        <p class="text-[12px] md:text-sm font-bold text-slate-700">Upload Dokumentasi</p>
-                                        <p class="text-[10px] md:text-xs text-slate-400 mt-0.5">Ukuran foto akan disesuaikan otomatis</p>
-                                    </div>
-                                    <input type="file" id="f-foto" class="hidden" accept="image/*" onchange="previewSelectedFoto(this)">
-                                </label>
-                            </div>
-                            <div id="foto-preview-container" class="mt-4 hidden relative inline-block group">
-                                <img id="f-foto-img" class="h-32 md:h-40 w-auto rounded-2xl border-2 border-slate-200 shadow-md object-contain bg-white p-1">
-                                <button type="button" onclick="document.getElementById('f-foto').click()" class="absolute -bottom-2 -right-2 bg-indigo-600 text-white rounded-[10px] w-9 h-9 md:w-10 md:h-10 flex items-center justify-center shadow-lg border-2 border-white hover:bg-indigo-700 transition-transform active:scale-90">
-                                    <i class="fas fa-sync-alt text-xs"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <button type="button" onclick="submitJurnal()" class="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/30 mt-6 md:mt-8 active:scale-[0.98] flex items-center justify-center gap-2 text-[14px] md:text-[15px] tracking-wide">
-                            ${btnText}
-                        </button>
-                    </form>
                 </div>
             `;
-            
-            if(editingJournalData) {
-                setTimeout(() => {
-                    let editDate = editingJournalData.tanggal;
-                    if (editDate && editDate.includes('T')) editDate = editDate.split('T')[0];
-                    document.getElementById('f-tgl').value = editDate;
-                    document.getElementById('f-kelas').value = editingJournalData.kelas;
-                    document.getElementById('f-jam-mulai').value = editingJournalData.jam_mulai;
-                    document.getElementById('f-jam-selesai').value = editingJournalData.jam_selesai;
-                    document.getElementById('f-uraian').value = editingJournalData.uraian;
-                    if(isGuru) {
-                        document.getElementById('f-hadir').value = editingJournalData.jml_hadir;
-                        document.getElementById('f-sakit').value = editingJournalData.abs_sakit;
-                        document.getElementById('f-ijin').value = editingJournalData.abs_ijin;
-                        document.getElementById('f-alpha').value = editingJournalData.abs_alpha;
-                    }
-                    if(editingJournalData.foto) {
-                        document.getElementById('f-foto-img').src = editingJournalData.foto;
-                        document.getElementById('foto-preview-container').classList.remove('hidden');
-                    }
-                    handleKelasChange();
-                }, 50);
-            } else {
-                setTimeout(() => {
-                    const today = new Date();
-                    const yyyy = today.getFullYear();
-                    const mm = String(today.getMonth() + 1).padStart(2, '0');
-                    const dd = String(today.getDate()).padStart(2, '0');
-                    document.getElementById('f-tgl').value = `${yyyy}-${mm}-${dd}`;
-                    handleKelasChange();
-                }, 50); 
-            }
-        }
-
-        function handleKelasChange() {
-            const kelas = document.getElementById('f-kelas')?.value;
-            const containerKehadiran = document.getElementById('container-kehadiran');
-            const containerFoto = document.getElementById('container-foto');
-            const fUraian = document.getElementById('f-uraian');
-            
-            if (kelas === 'Istirahat') {
-                if (containerKehadiran) containerKehadiran.classList.add('hidden');
-                if (containerFoto) containerFoto.classList.add('hidden');
-                if (fUraian && fUraian.value.trim() === '') fUraian.value = 'Waktu Istirahat';
-            } else if (kelas === 'Umum') {
-                if (containerKehadiran) containerKehadiran.classList.add('hidden');
-                if (containerFoto) containerFoto.classList.remove('hidden');
-            } else {
-                if (containerKehadiran) containerKehadiran.classList.remove('hidden');
-                if (containerFoto) containerFoto.classList.remove('hidden');
-            }
-        }
-
-        async function previewSelectedFoto(input) {
-            if (input.files && input.files[0]) {
-                const container = document.getElementById('foto-preview-container');
-                const img = document.getElementById('f-foto-img');
-                const base64 = await compressImage(input.files[0], false); 
-                img.src = base64;
-                container.classList.remove('hidden');
-            }
+            let pArea = document.getElementById('sijari-print-area');
+            if(pArea) pArea.remove();
+            document.body.insertAdjacentHTML('beforeend', html);
+            showLoader(true);
+            setTimeout(() => { showLoader(false); window.print(); }, 800);
         }
 
         async function submitJurnal() {
             const form = document.getElementById('journal-form');
-            if(!form.checkValidity()) return notify('Lengkapi semua field yang wajib diisi!', 'warning');
-
+            if(!form.checkValidity()) return notify('Lengkapi data!', 'warning');
             showLoader(true);
             const data = {
                 id: editingJournalData ? editingJournalData.id : Date.now().toString(),
@@ -861,252 +435,84 @@
                 uraian: document.getElementById('f-uraian').value,
                 nip_user: editingJournalData ? editingJournalData.nip_user : currentUser.nip,
                 nama_user: editingJournalData ? editingJournalData.nama_user : currentUser.nama,
+                jml_hadir: document.getElementById('f-hadir')?.value || 0,
+                abs_sakit: document.getElementById('f-sakit')?.value || 0,
+                abs_ijin: document.getElementById('f-ijin')?.value || 0,
+                abs_alpha: document.getElementById('f-alpha')?.value || 0,
                 foto: document.getElementById('f-foto-img')?.src || ''
             };
-
-            if(currentUser.role === 'Guru' && data.kelas !== 'Istirahat' && data.kelas !== 'Umum') {
-                data.jml_hadir = document.getElementById('f-hadir').value;
-                data.abs_sakit = document.getElementById('f-sakit').value;
-                data.abs_ijin = document.getElementById('f-ijin').value;
-                data.abs_alpha = document.getElementById('f-alpha').value;
-            } else {
-                data.jml_hadir = 0; data.abs_sakit = 0; data.abs_ijin = 0; data.abs_alpha = 0;
-            }
-
-            if(IS_PREVIEW) {
-                setTimeout(() => {
-                    if (editingJournalData) {
-                        const index = journalsData.findIndex(j => String(j.id) === String(data.id));
-                        if(index !== -1) journalsData[index] = data;
-                        notify('Jurnal berhasil diperbarui!');
-                    } else {
-                        journalsData.unshift(data);
-                        notify('Jurnal berhasil disimpan!');
-                    }
-                    showLoader(false);
-                    editingJournalData = null; 
-                    renderPage('dashboard');
-                }, 1000);
-            } else {
-                try {
-                    await setDoc(doc(db, "journals", data.id), data);
-                    if (editingJournalData) {
-                        const index = journalsData.findIndex(j => String(j.id) === String(data.id));
-                        if(index !== -1) journalsData[index] = data;
-                    } else {
-                        journalsData.unshift(data);
-                    }
-                    showLoader(false);
-                    notify(editingJournalData ? 'Jurnal diperbarui!' : 'Jurnal disimpan!');
-                    editingJournalData = null; 
-                    renderPage('dashboard');
-                } catch(e) {
-                    showLoader(false);
-                    notify(e.message, 'error');
-                }
-            }
+            try {
+                await setDoc(doc(db, "journals", data.id), data);
+                const journalsQuery = await getDocs(collection(db, "journals"));
+                journalsData = journalsQuery.docs.map(d => d.data());
+                showLoader(false);
+                notify('Berhasil disimpan!');
+                editingJournalData = null;
+                renderPage('dashboard');
+            } catch(e) { showLoader(false); notify(e.message, 'error'); }
         }
 
         function renderManageUsers(container) {
             container.innerHTML = `
-                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 md:mb-8 gap-4 md:gap-5">
-                    <div class="w-full lg:w-auto text-center lg:text-left">
-                        <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">Kelola Anggota</h1>
-                        <p class="text-[12px] md:text-sm text-slate-500 mt-1 font-medium">Manajemen user dan hak akses</p>
-                    </div>
-                    <div class="grid grid-cols-2 md:flex gap-2 md:gap-3 w-full lg:w-auto">
-                        <button onclick="downloadUserTemplate()" class="action-btn bg-white border border-slate-200 text-emerald-600 px-4 py-3 md:py-2.5 rounded-xl hover:bg-emerald-50 hover:border-emerald-200 text-[13px] md:text-sm font-bold flex items-center justify-center gap-2 shadow-sm">
-                            <i class="fas fa-file-excel"></i> Template
-                        </button>
-                        <button onclick="document.getElementById('excel-upload').click()" class="action-btn bg-white border border-slate-200 text-indigo-600 px-4 py-3 md:py-2.5 rounded-xl hover:bg-indigo-50 hover:border-indigo-200 text-[13px] md:text-sm font-bold flex items-center justify-center gap-2 shadow-sm">
-                            <i class="fas fa-file-upload"></i> Upload
-                        </button>
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4">
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800">Kelola Anggota</h1>
+                    <div class="grid grid-cols-2 md:flex gap-3 w-full lg:w-auto">
+                        <button onclick="downloadUserTemplate()" class="action-btn bg-white border border-slate-200 text-emerald-600 px-4 py-2.5 rounded-xl font-bold">Template</button>
+                        <button onclick="document.getElementById('excel-upload').click()" class="action-btn bg-white border border-slate-200 text-indigo-600 px-4 py-2.5 rounded-xl font-bold">Upload</button>
                         <input type="file" id="excel-upload" class="hidden" accept=".xlsx, .xls" onchange="handleExcelUpload(this)">
-                        
-                        <button onclick="showUserForm()" class="action-btn bg-indigo-600 text-white px-4 py-3 md:py-2.5 rounded-xl hover:bg-indigo-700 text-[13px] md:text-sm font-bold flex items-center justify-center gap-2 shadow-md shadow-indigo-600/30">
-                            <i class="fas fa-plus"></i> Tambah
-                        </button>
-                        <button onclick="handleDeleteAllUsers()" class="action-btn bg-rose-50 text-rose-600 border border-rose-100 px-4 py-3 md:py-2.5 rounded-xl hover:bg-rose-100 text-[13px] md:text-sm font-bold flex items-center justify-center gap-2">
-                            <i class="fas fa-trash-alt"></i> Bersihkan
-                        </button>
+                        <button onclick="showUserForm()" class="action-btn bg-indigo-600 text-white px-4 py-2.5 rounded-xl font-bold">Tambah</button>
+                        <button onclick="handleDeleteAllUsers()" class="action-btn bg-rose-50 text-rose-600 px-4 py-2.5 rounded-xl font-bold">Bersihkan</button>
                     </div>
                 </div>
-
-                <div class="bg-white rounded-2xl md:rounded-[1.5rem] shadow-sm border border-slate-100 overflow-hidden flex flex-col max-h-[550px]">
-                    <div class="overflow-x-auto overflow-y-auto flex-1 custom-scroll relative">
-                        <table class="w-full text-left whitespace-nowrap min-w-[700px]">
-                            <thead class="sticky top-0 bg-white/95 backdrop-blur-md z-10 shadow-sm border-b border-slate-200">
-                                <tr class="text-slate-500 text-[10px] md:text-[11px] uppercase tracking-wider">
-                                    <th class="p-4 md:p-5 font-extrabold">Profil User</th>
-                                    <th class="p-4 md:p-5 font-extrabold">NIP / ID</th>
-                                    <th class="p-4 md:p-5 font-extrabold">Mapel</th>
-                                    <th class="p-4 md:p-5 font-extrabold">Role Sistem</th>
-                                    <th class="p-4 md:p-5 font-extrabold text-right pr-6 md:pr-8">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100/80">
-                                ${usersData.map(u => `
-                                    <tr class="hover:bg-slate-50/60 transition-colors group">
-                                        <td class="p-4 md:p-5 flex items-center gap-3 md:gap-4">
-                                            <img src="${getAvatar(u.nama, u.foto)}" class="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover border border-slate-200 shadow-sm bg-white">
-                                            <span class="font-bold text-slate-800 text-[13px] md:text-sm">${u.nama}</span>
-                                        </td>
-                                        <td class="p-4 md:p-5 font-mono text-[13px] md:text-sm text-slate-500 font-semibold">${u.nip}</td>
-                                        <td class="p-4 md:p-5 text-sm text-slate-600">
-                                            <span class="bg-slate-100 text-slate-700 py-1.5 px-3 rounded-lg text-[10px] md:text-[11px] font-bold border border-slate-200/60 inline-block tracking-wide">${u.mapel || '-'}</span>
-                                        </td>
-                                        <td class="p-4 md:p-5">
-                                            <span class="px-3 py-1.5 rounded-lg ${u.role==='Admin'?'bg-violet-50 text-violet-700 border-violet-200':u.role==='Kepsek'?'bg-amber-50 text-amber-700 border-amber-200':'bg-indigo-50 text-indigo-700 border-indigo-200'} text-[9px] md:text-[10px] font-bold uppercase tracking-widest border">${u.role}</span>
-                                        </td>
-                                        <td class="p-4 md:p-5 text-right pr-6 md:pr-8">
-                                            <div class="flex justify-end gap-2">
-                                                <button onclick="showUserForm('${u.nip}')" class="bg-white border border-slate-200 text-slate-500 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 w-8 h-8 md:w-9 md:h-9 rounded-xl flex items-center justify-center transition-all shadow-sm active:scale-90">
-                                                    <i class="fas fa-pen text-[12px] md:text-[13px]"></i>
-                                                </button>
-                                                <button onclick="deleteUser('${u.nip}')" class="bg-white border border-slate-200 text-slate-500 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 w-8 h-8 md:w-9 md:h-9 rounded-xl flex items-center justify-center transition-all shadow-sm active:scale-90">
-                                                    <i class="fas fa-trash text-[12px] md:text-[13px]"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden max-h-[550px] overflow-y-auto">
+                    <table class="w-full text-left whitespace-nowrap min-w-[700px]">
+                        <thead class="sticky top-0 bg-white/95 backdrop-blur-md z-10 border-b border-slate-200"><tr class="text-slate-500 text-[10px] uppercase font-bold"><th class="p-5">Profil</th><th class="p-5">NIP</th><th class="p-5">Mapel</th><th class="p-5">Role</th><th class="p-5 text-right">Aksi</th></tr></thead>
+                        <tbody class="divide-y divide-slate-50">
+                            ${usersData.map(u => `<tr><td class="p-5 flex items-center gap-4"><img src="${getAvatar(u.nama, u.foto)}" class="w-10 h-10 rounded-full object-cover bg-white"><span class="font-bold text-slate-800">${u.nama}</span></td><td class="p-5 font-mono text-sm">${u.nip}</td><td class="p-5 text-sm">${u.mapel || '-'}</td><td class="p-5"><span class="px-2 py-1 rounded bg-indigo-50 text-indigo-700 text-[10px] font-bold">${u.role}</span></td><td class="p-5 text-right"><div class="flex justify-end gap-2"><button onclick="showUserForm('${u.nip}')" class="bg-white border border-slate-200 w-8 h-8 rounded-xl flex items-center justify-center"><i class="fas fa-pen text-[12px]"></i></button><button onclick="deleteUser('${u.nip}')" class="bg-white border border-slate-200 text-rose-500 w-8 h-8 rounded-xl flex items-center justify-center"><i class="fas fa-trash text-[12px]"></i></button></div></td></tr>`).join('')}
+                        </tbody>
+                    </table>
                 </div>
             `;
         }
 
         async function showUserForm(nip = null) {
-            const user = nip ? usersData.find(u => String(u.nip) === String(nip)) : { nip: '', nama: '', password: '', role: 'Guru', mapel: '', foto: '' };
-            
-            const { value: formValues } = await Swal.fire({
-                title: `<span class="text-xl md:text-2xl font-extrabold text-slate-800">${nip ? 'Edit User' : 'Tambah User Baru'}</span>`,
-                html: `
-                    <div class="text-left space-y-4 md:space-y-5 h-[60vh] overflow-y-auto p-1 mt-2 md:mt-4 custom-scroll">
-                        <div>
-                            <label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase block mb-1.5 pl-1">Nomor Induk / Username</label>
-                            <input id="swal-nip" class="w-full p-3.5 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none text-[13px] md:text-sm transition-all font-bold text-slate-700" value="${user.nip}" ${nip ? 'disabled' : 'placeholder="Ketik NIP/Username"'}>
-                        </div>
-                        <div>
-                            <label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase block mb-1.5 pl-1">Nama Lengkap</label>
-                            <input id="swal-nama" class="w-full p-3.5 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none text-[13px] md:text-sm transition-all font-bold text-slate-700" value="${user.nama}" placeholder="Nama & Gelar">
-                        </div>
-                        <div>
-                            <label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase block mb-1.5 pl-1">Mata Pelajaran</label>
-                            <input id="swal-mapel" class="w-full p-3.5 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none text-[13px] md:text-sm transition-all font-bold text-slate-700" value="${user.mapel || ''}" placeholder="Cth: Matematika">
-                        </div>
-                        <div>
-                            <label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase block mb-1.5 pl-1">Password Sistem</label>
-                            <input id="swal-pass" type="password" class="w-full p-3.5 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none text-[13px] md:text-sm transition-all font-bold text-slate-700" value="${user.password}" placeholder="Password Akun">
-                        </div>
-                        <div>
-                            <label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase block mb-1.5 pl-1">Role Akun</label>
-                            <select id="swal-role" class="w-full p-3.5 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none text-[13px] md:text-sm transition-all cursor-pointer font-bold text-slate-700">
-                                <option value="Guru" ${user.role==='Guru'?'selected':''}>Guru (Reguler)</option>
-                                <option value="Kepsek" ${user.role==='Kepsek'?'selected':''}>Kepala Sekolah</option>
-                                <option value="Admin" ${user.role==='Admin'?'selected':''}>Admin (Full Akses)</option>
-                            </select>
-                        </div>
-                        <div class="pt-2">
-                            <label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase block mb-3 pl-1">Foto Profil (Opsional)</label>
-                            <div class="flex flex-row items-center justify-between md:justify-start gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200/60">
-                                <img id="swal-img-preview" src="${getAvatar(user.nama, user.foto)}" class="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover border-[3px] border-white shadow-sm bg-slate-200" >
-                                <button onclick="document.getElementById('swal-file').click()" class="px-4 py-2 bg-white text-indigo-600 border border-indigo-100 rounded-xl text-xs md:text-sm font-bold hover:bg-indigo-50 transition-colors shadow-sm whitespace-nowrap">
-                                    <i class="fas fa-camera mr-2"></i> Ganti Foto
-                                </button>
-                                <input type="file" id="swal-file" class="hidden" onchange="previewSwalFoto(this)">
-                            </div>
-                        </div>
-                    </div>
-                `,
-                focusConfirm: false, showCancelButton: true, confirmButtonText: 'Simpan', cancelButtonText: 'Batal',
-                customClass: {
-                    confirmButton: 'bg-indigo-600 text-white rounded-xl px-6 py-3 font-bold shadow-md hover:bg-indigo-700 w-full sm:w-auto',
-                    cancelButton: 'bg-slate-100 text-slate-600 rounded-xl px-6 py-3 font-bold hover:bg-slate-200 w-full sm:w-auto mt-2 sm:mt-0',
-                    popup: 'rounded-[2rem] p-4 md:p-6', actions: 'flex-col sm:flex-row w-full mt-6'
-                },
-                buttonsStyling: false,
-                preConfirm: () => {
-                    const imgSrc = document.getElementById('swal-img-preview').src;
-                    const finalFoto = imgSrc.startsWith('data:image') ? imgSrc : user.foto;
-                    return { nip: document.getElementById('swal-nip').value, nama: document.getElementById('swal-nama').value, mapel: document.getElementById('swal-mapel').value, password: document.getElementById('swal-pass').value, role: document.getElementById('swal-role').value, foto: finalFoto };
-                }
+            const user = nip ? usersData.find(u => u.nip === nip) : { nip: '', nama: '', password: '', role: 'Guru', mapel: '', foto: '' };
+            const { value: v } = await Swal.fire({
+                title: 'User Form',
+                html: `<input id="sw-nip" class="swal2-input" placeholder="NIP" value="${user.nip}" ${nip?'disabled':''}>
+                       <input id="sw-nama" class="swal2-input" placeholder="Nama" value="${user.nama}">
+                       <input id="sw-mapel" class="swal2-input" placeholder="Mapel" value="${user.mapel}">
+                       <input id="sw-pass" type="password" class="swal2-input" placeholder="Password" value="${user.password}">
+                       <select id="sw-role" class="swal2-input"><option value="Guru" ${user.role==='Guru'?'selected':''}>Guru</option><option value="Kepsek" ${user.role==='Kepsek'?'selected':''}>Kepsek</option><option value="Admin" ${user.role==='Admin'?'selected':''}>Admin</option></select>`,
+                preConfirm: () => ({ nip: document.getElementById('sw-nip').value, nama: document.getElementById('sw-nama').value, mapel: document.getElementById('sw-mapel').value, password: document.getElementById('sw-pass').value, role: document.getElementById('sw-role').value, foto: user.foto })
             });
-
-            if (formValues) {
-                if(!formValues.nip || !formValues.nama) return notify('NIP dan Nama wajib diisi!', 'warning');
+            if(v) {
                 showLoader(true);
-                if (IS_PREVIEW) {
-                    setTimeout(() => {
-                        if(nip) { const idx = usersData.findIndex(u => String(u.nip) === String(nip)); usersData[idx] = formValues; } 
-                        else { usersData.push(formValues); }
-                        showLoader(false); notify('Data user disimpan!'); renderPage('manage-users');
-                    }, 1000);
-                } else {
-                    try {
-                        await setDoc(doc(db, "users", formValues.nip), formValues);
-                        if(nip) { const idx = usersData.findIndex(u => String(u.nip) === String(nip)); usersData[idx] = formValues; } 
-                        else { usersData.push(formValues); }
-                        
-                        if (currentUser && currentUser.nip === formValues.nip) { currentUser = formValues; initApp(); }
-                        showLoader(false); notify('Berhasil disimpan!'); renderPage('manage-users');
-                    } catch(e) {
-                        showLoader(false); notify(e.message, 'error');
-                    }
-                }
-            }
-        }
-
-        function previewSwalFoto(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = async (e) => {
-                    const compressed = await compressImage(input.files[0], true); 
-                    document.getElementById('swal-img-preview').src = compressed;
-                };
-                reader.readAsDataURL(input.files[0]);
+                try {
+                    await setDoc(doc(db, "users", v.nip), v);
+                    const usersQuery = await getDocs(collection(db, "users"));
+                    usersData = usersQuery.docs.map(d => d.data());
+                    if (currentUser && currentUser.nip === v.nip) { currentUser = v; initApp(); }
+                    renderPage('manage-users'); showLoader(false); notify('Disimpan!');
+                } catch(e) { showLoader(false); notify(e.message, 'error'); }
             }
         }
 
         function renderProfile(container) {
             container.innerHTML = `
-                <div class="max-w-md mx-auto bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-100 text-center relative overflow-hidden mt-4 md:mt-6">
-                    <div class="absolute top-0 left-0 w-full h-28 md:h-32 bg-gradient-to-br from-slate-800 via-indigo-900 to-slate-900"></div>
-                    
-                    <div class="relative z-10 pt-10 md:pt-12 mb-5 md:mb-6 group inline-block">
-                        <img id="p-foto-preview" src="${getAvatar(currentUser.nama, currentUser.foto)}" class="w-28 h-28 md:w-32 md:h-32 rounded-[2rem] object-cover border-[4px] border-white shadow-xl transition-transform duration-300 group-hover:scale-105 bg-white">
-                        <label for="p-foto-input" class="absolute -bottom-2 -right-2 bg-indigo-600 text-white w-10 h-10 md:w-11 md:h-11 flex items-center justify-center rounded-[12px] cursor-pointer hover:bg-indigo-700 shadow-lg border-2 border-white transition-all z-20 active:scale-90" title="Ubah Foto Profil">
-                            <i class="fas fa-camera text-[13px] md:text-sm"></i>
-                            <input type="file" id="p-foto-input" class="hidden" accept="image/*" onchange="previewProfilePhoto(this)">
-                        </label>
+                <div class="max-w-md mx-auto bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 text-center relative overflow-hidden mt-6">
+                    <div class="absolute top-0 left-0 w-full h-32 bg-slate-800"></div>
+                    <div class="relative z-10 pt-12 mb-6 inline-block">
+                        <img id="p-foto-preview" src="${getAvatar(currentUser.nama, currentUser.foto)}" class="w-32 h-32 rounded-[2rem] object-cover border-[4px] border-white shadow-xl bg-white">
+                        <label class="absolute -bottom-2 -right-2 bg-indigo-600 text-white w-10 h-10 flex items-center justify-center rounded-xl cursor-pointer border-2 border-white"><i class="fas fa-camera"></i><input type="file" class="hidden" onchange="previewProfilePhoto(this)"></label>
                     </div>
-                    
-                    <h2 class="text-xl md:text-2xl font-extrabold text-slate-800 mb-1 tracking-tight">${currentUser.nama}</h2>
-                    <p class="text-[10px] md:text-[11px] text-indigo-600 font-extrabold bg-indigo-50 border border-indigo-100 inline-block px-4 py-1.5 rounded-lg mb-6 md:mb-8 tracking-widest uppercase">${currentUser.role}</p>
-
-                    <div class="space-y-4 md:space-y-5 text-left">
-                        <div>
-                            <label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block pl-1">NIP / Username</label>
-                            <input type="text" value="${currentUser.nip}" disabled class="w-full p-3.5 bg-slate-50 border border-slate-100 rounded-xl text-slate-400 font-mono text-[13px] md:text-sm cursor-not-allowed">
-                        </div>
-                        <div>
-                            <label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block pl-1">Nama Lengkap</label>
-                            <input type="text" id="p-nama" value="${currentUser.nama}" class="w-full p-3.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none bg-slate-50 transition-all text-[13px] md:text-sm font-bold text-slate-700">
-                        </div>
-                        ${currentUser.role === 'Guru' ? `
-                        <div>
-                            <label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block pl-1">Mata Pelajaran</label>
-                            <input type="text" id="p-mapel" value="${currentUser.mapel || ''}" class="w-full p-3.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none bg-slate-50 transition-all text-[13px] md:text-sm font-bold text-slate-700">
-                        </div>
-                        ` : ''}
-                        <div>
-                            <label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block pl-1">Ubah Password</label>
-                            <input type="password" id="p-pass" value="${currentUser.password}" class="w-full p-3.5 border border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none bg-slate-50 transition-all text-[13px] md:text-sm font-bold text-slate-700">
-                        </div>
-                        <button onclick="updateProfile()" class="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl hover:bg-indigo-700 transition-all mt-4 md:mt-6 shadow-lg shadow-indigo-600/30 active:scale-[0.98] flex justify-center items-center gap-2 text-[14px] md:text-[15px] tracking-wide">
-                            <i class="fas fa-save"></i> SIMPAN PERUBAHAN
-                        </button>
+                    <h2 class="text-2xl font-extrabold text-slate-800 mb-8">${currentUser.nama}</h2>
+                    <div class="space-y-4 text-left">
+                        <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">NIP</label><input type="text" value="${currentUser.nip}" disabled class="w-full p-3.5 bg-slate-50 border border-slate-100 rounded-xl"></div>
+                        <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Nama</label><input type="text" id="p-nama" value="${currentUser.nama}" class="w-full p-3.5 border border-slate-200 rounded-xl font-bold"></div>
+                        ${currentUser.role==='Guru'?`<div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Mapel</label><input type="text" id="p-mapel" value="${currentUser.mapel}" class="w-full p-3.5 border border-slate-200 rounded-xl font-bold"></div>`:''}
+                        <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Password</label><input type="password" id="p-pass" value="${currentUser.password}" class="w-full p-3.5 border border-slate-200 rounded-xl font-bold"></div>
+                        <button onclick="updateProfile()" class="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl mt-4 active:scale-[0.98]">SIMPAN PERUBAHAN</button>
                     </div>
                 </div>
             `;
@@ -1116,355 +522,30 @@
             if (input.files && input.files[0]) {
                 const base64 = await compressImage(input.files[0], true); 
                 document.getElementById('p-foto-preview').src = base64;
-                notify('Foto siap! Klik Simpan Perubahan', 'info');
+                notify('Foto siap! Klik Simpan', 'info');
             }
         }
 
-        function updateAllProfileImages(nama, foto) {
-            const avatarUrl = getAvatar(nama, foto);
-            const els = ['user-photo-sidebar', 'mobile-top-user-photo'];
-            els.forEach(id => { const el = document.getElementById(id); if(el) el.src = avatarUrl; });
-            const nameSidebar = document.getElementById('user-name-sidebar');
-            if(nameSidebar) nameSidebar.innerText = nama;
-        }
-
-        function updateProfile() {
+        async function updateProfile() {
             showLoader(true);
-            const imgPreviewSrc = document.getElementById('p-foto-preview').src;
-            const finalFoto = imgPreviewSrc.startsWith('data:image') ? imgPreviewSrc : currentUser.foto;
-            const mapelInput = document.getElementById('p-mapel');
-            const mapelVal = mapelInput ? mapelInput.value : currentUser.mapel;
-            const newData = { ...currentUser, nama: document.getElementById('p-nama').value, mapel: mapelVal, password: document.getElementById('p-pass').value, foto: finalFoto };
-
-            if(IS_PREVIEW) {
-                setTimeout(() => {
-                    currentUser = newData;
-                    const idx = usersData.findIndex(u => String(u.nip) === String(currentUser.nip));
-                    if(idx !== -1) usersData[idx] = newData;
-                    updateAllProfileImages(currentUser.nama, currentUser.foto); initApp(); showLoader(false); notify('Profil diperbarui!');
-                }, 1000);
-            } else {
-                setDoc(doc(db, "users", newData.nip), newData).then(() => {
-                    currentUser = newData;
-                    const idx = usersData.findIndex(u => String(u.nip) === String(currentUser.nip));
-                    if(idx !== -1) usersData[idx] = newData;
-                    updateAllProfileImages(currentUser.nama, currentUser.foto); initApp(); showLoader(false); notify('Profil diperbarui!');
-                }).catch(e => {
-                    showLoader(false); notify(e.message, 'error');
-                });
-            }
+            const newData = { ...currentUser, nama: document.getElementById('p-nama').value, password: document.getElementById('p-pass').value, foto: document.getElementById('p-foto-preview').src };
+            if(document.getElementById('p-mapel')) newData.mapel = document.getElementById('p-mapel').value;
+            try {
+                await setDoc(doc(db, "users", newData.nip), newData);
+                currentUser = newData; initApp(); showLoader(false); notify('Profil diperbarui!');
+            } catch(e) { showLoader(false); notify(e.message, 'error'); }
         }
 
-        async function handlePrintDialog() {
-            const isAdminOrKepsek = currentUser.role === 'Admin' || currentUser.role === 'Kepsek';
-            let htmlContent = `<div class="text-left space-y-4 p-1"><p class="text-[13px] md:text-sm text-slate-500 mb-2 md:mb-4">Tentukan rentang tanggal laporan.</p><div class="grid grid-cols-2 gap-3 md:gap-4"><div><label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase block mb-1">Dari Tanggal</label><input type="date" id="print-start" class="w-full p-2.5 md:p-3 border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 text-[13px] md:text-sm bg-slate-50 font-medium"></div><div><label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase block mb-1">Sampai Tanggal</label><input type="date" id="print-end" class="w-full p-2.5 md:p-3 border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 text-[13px] md:text-sm bg-slate-50 font-medium"></div></div>`;
-            if (isAdminOrKepsek) {
-                const guruOptions = usersData.filter(u => u.role === 'Guru' || u.role === 'Kepsek').map(u => `<option value="${u.nip}">${u.nama}</option>`).join('');
-                htmlContent += `<div class="mt-4"><label class="text-[10px] md:text-[11px] font-bold text-slate-500 uppercase block mb-1">Pilih Guru (Opsional)</label><select id="print-guru" class="w-full p-2.5 md:p-3 border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 text-[13px] md:text-sm bg-slate-50 cursor-pointer font-medium"><option value="">-- Semua Guru --</option>${guruOptions}</select></div>`;
-            }
-            htmlContent += `</div>`;
-
-            const { value: filterValues, isConfirmed } = await Swal.fire({
-                title: '<span class="text-xl md:text-2xl font-extrabold text-slate-800">Cetak Laporan</span>', html: htmlContent, showCancelButton: true, confirmButtonText: '<i class="fas fa-print mr-2"></i> Cetak', cancelButtonText: 'Batal',
-                customClass: { confirmButton: 'bg-indigo-600 text-white rounded-xl px-6 py-3 font-bold shadow-md hover:bg-indigo-700 w-full sm:w-auto', cancelButton: 'bg-slate-100 text-slate-600 rounded-xl px-6 py-3 font-bold hover:bg-slate-200 w-full sm:w-auto mt-2 sm:mt-0', popup: 'rounded-[2rem] p-4 md:p-6', actions: 'flex-col sm:flex-row w-full mt-6' }, buttonsStyling: false,
-                preConfirm: () => ({ start: document.getElementById('print-start').value, end: document.getElementById('print-end').value, nipGuru: isAdminOrKepsek ? document.getElementById('print-guru').value : currentUser.nip })
-            });
-
-            if (isConfirmed && filterValues) {
-                let filtered = journalsData;
-                if (filterValues.nipGuru) { filtered = filtered.filter(j => j.nip_user === filterValues.nipGuru); } else if (currentUser.role === 'Guru') { filtered = filtered.filter(j => j.nip_user === currentUser.nip); }
-                if (filterValues.start) filtered = filtered.filter(j => j.tanggal >= filterValues.start);
-                if (filterValues.end) filtered = filtered.filter(j => j.tanggal <= filterValues.end);
-                printReport(filtered, filterValues.nipGuru);
-            }
-        }
-
-        function printReport(dataToPrint, filterNipGuru = null) {
-            if (!dataToPrint || dataToPrint.length === 0) return notify('Tidak ada data untuk dicetak pada filter tersebut', 'warning');
-            const kepsek = { nama: 'Ni Kadek Yadnyani, S.Pd', nip: '197910162006042006' };
-            let guruInfoNama = currentUser.nama, guruInfoNip = currentUser.nip, isKepsekFormat = false;
-            
-            if (filterNipGuru) {
-                const targetUser = usersData.find(u => String(u.nip) === String(filterNipGuru));
-                if (targetUser) { guruInfoNama = targetUser.nama; guruInfoNip = targetUser.nip; if (targetUser.role === 'Kepsek') { isKepsekFormat = true; } }
-            } else if (currentUser.role === 'Kepsek') { isKepsekFormat = true;
-            } else if (currentUser.role === 'Admin') {
-                const uniqueGurus = [...new Set(dataToPrint.map(j => j.nip_user))];
-                if (uniqueGurus.length === 1) {
-                    const targetUser = usersData.find(u => u.nip === uniqueGurus[0]);
-                    if (targetUser) { guruInfoNama = targetUser.nama; guruInfoNip = targetUser.nip; if (targetUser.role === 'Kepsek') { isKepsekFormat = true; } }
-                    else { guruInfoNama = dataToPrint[0].nama_user; guruInfoNip = dataToPrint[0].nip_user; }
-                } else { guruInfoNama = "Semua Guru"; guruInfoNip = "-"; }
-            }
-
-            const sortedData = [...dataToPrint].sort((a, b) => {
-                const dA = new Date(a.tanggal), dB = new Date(b.tanggal);
-                if (dA < dB) return -1; if (dA > dB) return 1;
-                return (parseInt(a.jam_mulai) || 0) - (parseInt(b.jam_mulai) || 0);
-            });
-
-            let dateSpans = {};
-            sortedData.forEach(j => {
-                const isIstirahat = j.kelas === 'Istirahat'; let rSpan = 1;
-                if (!isNaN(j.jam_mulai) && !isNaN(j.jam_selesai)) { let s = parseInt(j.jam_mulai), e = parseInt(j.jam_selesai); if (e >= s && !isIstirahat) rSpan = e - s + 1; }
-                j.calculatedRowSpan = rSpan; if(!dateSpans[j.tanggal]) dateSpans[j.tanggal] = 0; dateSpans[j.tanggal] += rSpan;
-            });
-
-            let tableHeader = isKepsekFormat ? `<tr><th style="width: 5%; text-align: center !important;">No</th><th style="width: 18%; text-align: center !important;">Hari/Tanggal</th><th style="width: 8%; text-align: center !important;">Jam Ke</th><th style="text-align: center !important;">Uraian Kegiatan</th><th style="width: 25%; text-align: center !important;">Dokumentasi</th></tr>` : `<tr><th rowspan="2" style="width: 4%; text-align: center !important;">No</th><th rowspan="2" style="width: 13%; text-align: center !important;">Hari /<br>Tanggal</th><th rowspan="2" style="width: 6%; text-align: center !important;">Jam Ke</th><th rowspan="2" style="width: 8%; text-align: center !important;">Kelas</th><th rowspan="2" style="text-align: center !important;">Uraian Kegiatan / Pokok Bahasan</th><th colspan="4" style="width: 16%; text-align: center !important;">Kehadiran Siswa</th><th rowspan="2" style="width: 18%; text-align: center !important;">Dokumentasi</th></tr><tr><th style="background-color: #86efac !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; width: 4%; text-align: center !important;">H</th><th style="background-color: #fde047 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; width: 4%; text-align: center !important;">S</th><th style="background-color: #93c5fd !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; width: 4%; text-align: center !important;">I</th><th style="background-color: #fca5a5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; width: 4%; text-align: center !important;">A</th></tr>`;
-
-            let tableRows = "", processedDates = {}, dateCounter = 0; 
-            sortedData.forEach((j, index) => {
-                const isIstirahat = j.kelas === 'Istirahat', isUmum = j.kelas === 'Umum';
-                const dateDisplay = new Date(j.tanggal).toLocaleDateString('id-ID', { weekday: 'long' }) + ",<br>" + new Date(j.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-                
-                let rowSpan = j.calculatedRowSpan, jamList = [j.jam_mulai];
-                if (rowSpan > 1) { let s = parseInt(j.jam_mulai), e = parseInt(j.jam_selesai); jamList = []; for(let k = s; k <= e; k++) jamList.push(k); }
-
-                let rowHTML = "<tr>";
-                if (!processedDates[j.tanggal]) { dateCounter++; rowHTML += `<td class='center' rowspan='${dateSpans[j.tanggal]}'>${dateCounter}</td><td class='center' rowspan='${dateSpans[j.tanggal]}'>${dateDisplay}</td>`; processedDates[j.tanggal] = true; }
-
-                if (isKepsekFormat) {
-                    if (isIstirahat) { rowHTML += `<td colspan='3' class='bg-istirahat' style='background-color: #e0f2fe !important; -webkit-print-color-adjust: exact; print-color-adjust: exact;'>ISTIRAHAT</td></tr>`; } 
-                    else {
-                        rowHTML += `<td class='center'>${jamList[0]}</td><td rowspan='${rowSpan}' style='vertical-align: middle !important; padding-left: 8px;'>${j.uraian}</td><td class='center' rowspan='${rowSpan}'>${(j.foto ? "<img src='" + j.foto + "' class='doc'>" : "-")}</td></tr>`;
-                        for (let k = 1; k < jamList.length; k++) { rowHTML += `<tr><td class='center'>${jamList[k]}</td></tr>`; }
-                    }
-                } else {
-                    if (isIstirahat) { rowHTML += `<td colspan='8' class='bg-istirahat' style='background-color: #e0f2fe !important; -webkit-print-color-adjust: exact; print-color-adjust: exact;'>ISTIRAHAT</td></tr>`; } 
-                    else if (isUmum) {
-                        rowHTML += `<td class='center'>${jamList[0]}</td><td colspan='6' rowspan='${rowSpan}' class='bg-istirahat' style='background-color: white !important; font-weight: normal; font-style: normal; text-align: left !important; padding-left: 8px; vertical-align: middle !important;'>${j.uraian}</td><td class='center' rowspan='${rowSpan}'>${(j.foto ? "<img src='" + j.foto + "' class='doc'>" : "-")}</td></tr>`;
-                        for (let k = 1; k < jamList.length; k++) { rowHTML += `<tr><td class='center'>${jamList[k]}</td></tr>`; }
-                    } else {
-                        rowHTML += `<td class='center'>${jamList[0]}</td><td class='center' rowspan='${rowSpan}'>${j.kelas}</td><td rowspan='${rowSpan}' style='vertical-align: middle !important; padding-left: 8px;'>${j.uraian}</td><td class='center' rowspan='${rowSpan}'>${j.jml_hadir}</td><td class='center' rowspan='${rowSpan}'>${j.abs_sakit}</td><td class='center' rowspan='${rowSpan}'>${j.abs_ijin}</td><td class='center' rowspan='${rowSpan}'>${j.abs_alpha}</td><td class='center' rowspan='${rowSpan}'>${(j.foto ? "<img src='" + j.foto + "' class='doc'>" : "-")}</td></tr>`;
-                        for (let k = 1; k < jamList.length; k++) { rowHTML += `<tr><td class='center'>${jamList[k]}</td></tr>`; }
-                    }
-                }
-                tableRows += rowHTML;
-            });
-
-            let footerHTML = isKepsekFormat ? `<table><tr><td style="text-align: left !important; padding-left: 5%;">Mengetahui<br>Pengawas<br><br><br><br><br>.......................................................<br>NIP.</td><td style="text-align: left !important; padding-left: 15%;">Dawan, ${new Date().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}<br>Kepala SMP Negeri 1 Dawan<br><br><br><br><br>${kepsek.nama}<br>NIP. ${kepsek.nip}</td></tr></table>` : `<table><tr><td>Mengetahui,<br>Kepala SMP Negeri 1 Dawan<br><br><br><br><br><b><u>${kepsek.nama}</u></b><br>NIP. ${kepsek.nip}</td><td>Dawan, ${new Date().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}<br>Guru Mata Pelajaran<br><br><br><br><br><b><u>${guruInfoNama}</u></b><br>${guruInfoNip !== '-' ? 'NIP. ' + guruInfoNip : ''}</td></tr></table>`;
-
-            // METODE NATIVE DOM INJECTION (100% Anti-Blokir Browser)
-            let printArea = document.getElementById('sijari-print-area');
-            if(printArea) printArea.remove();
-
-            printArea = document.createElement('div');
-            printArea.id = 'sijari-print-area';
-            printArea.innerHTML = `
-                <style>
-                    @media print {
-                        body * { visibility: hidden; }
-                        #sijari-print-area, #sijari-print-area * { visibility: visible; }
-                        #sijari-print-area { position: absolute; left: 0; top: 0; width: 100%; font-family: 'Times New Roman', serif; font-size: 10pt; line-height: 1.3; color: black; background: white; }
-                        #app, #loader { display: none !important; }
-                        .kop { text-align: center; margin-bottom: 15px; width: 100%; }
-                        .kop img { width: 100%; height: auto; display: block; object-fit: contain; }
-                        h2 { text-align: center; text-transform: uppercase; margin: 10px 0 25px 0; font-size: 14pt; font-weight: bold;}
-                        table.data { width: 100%; border-collapse: collapse; margin-top: 10px; }
-                        table.data th, table.data td { border: 1px solid black; padding: 5px; text-align: left; vertical-align: middle; }
-                        table.data th { text-align: center !important; font-weight: bold; background-color: #dae8f5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-                        .bg-istirahat { text-align: center !important; vertical-align: middle !important; font-weight: bold; font-style: italic; }
-                        .center { text-align: center !important; vertical-align: middle !important; }
-                        .footer { margin-top: 30px; width: 100%; page-break-inside: avoid; }
-                        .footer table { border: none !important; width: 100%; }
-                        .footer td { border: none !important; width: 50%; padding-top: 10px; text-align: center !important; vertical-align: top !important; }
-                        img.doc { max-width: 100px; max-height: 100px; object-fit: cover; border-radius: 4px; border: 1px solid #ccc; display: block; margin: 0 auto; }
-                    }
-                    @media screen {
-                        #sijari-print-area { display: none; }
-                    }
-                </style>
-                <div class="kop"><img src="${PRINT_KOP}" alt="KOP SURAT DINAS"></div>
-                <h2>JURNAL KEGIATAN BELAJAR MENGAJAR</h2>
-                <table class="data">
-                    <thead>${tableHeader}</thead>
-                    <tbody>${tableRows}</tbody>
-                </table>
-                <div class="footer">${footerHTML}</div>
-            `;
-            
-            document.body.appendChild(printArea);
-
-            showLoader(true);
-            setTimeout(() => {
-                showLoader(false);
-                window.print();
-            }, 1200); 
-        }
-
-        async function handleBulkDelete() {
-            const { value: type } = await Swal.fire({
-                title: '<span class="text-xl md:text-2xl font-extrabold text-slate-800">Hapus Data</span>', input: 'select',
-                inputOptions: { 'range': 'Berdasarkan Tanggal', 'guru': 'Berdasarkan Guru', 'all': 'Hapus Seluruh Data' },
-                inputPlaceholder: 'Pilih jenis penghapusan', showCancelButton: true, confirmButtonColor: '#e11d48', confirmButtonText: 'Lanjutkan', cancelButtonText: 'Batal',
-                customClass: { confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-md hover:bg-rose-700 w-full sm:w-auto', cancelButton: 'rounded-xl px-6 py-3 font-bold hover:bg-slate-500 w-full sm:w-auto mt-2 sm:mt-0', popup: 'rounded-[2rem] p-4 md:p-6', input: 'rounded-xl p-3 bg-slate-50 border-slate-200 text-sm focus:ring-4 focus:ring-rose-500/10 font-medium', actions: 'flex-col sm:flex-row w-full' }
-            });
-
-            if(type === 'all') {
-                const confirm = await Swal.fire({
-                    title: 'Anda yakin?', text: 'Semua data jurnal akan dihapus permanen!', icon: 'warning', showCancelButton: true, confirmButtonColor: '#e11d48',
-                    customClass: { confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-md hover:bg-rose-700 w-full sm:w-auto', cancelButton: 'rounded-xl px-6 py-3 font-bold hover:bg-slate-500 w-full sm:w-auto mt-2 sm:mt-0', popup: 'rounded-[2rem] p-4 md:p-6', actions: 'flex-col sm:flex-row w-full' }
-                });
-                if(confirm.isConfirmed) {
-                    showLoader(true);
-                    if (IS_PREVIEW) { setTimeout(() => { journalsData = []; showLoader(false); renderPage('dashboard'); notify('Seluruh data dihapus'); }, 1000); } 
-                    else {
-                        try {
-                            const batch = writeBatch(db);
-                            journalsData.forEach(j => batch.delete(doc(db, "journals", String(j.id))));
-                            await batch.commit();
-                            journalsData = []; renderPage('dashboard'); notify('Seluruh data dihapus');
-                        } catch(e) { notify(e.message, 'error'); }
-                        showLoader(false);
-                    }
-                }
-            } else if (type === 'range') {
-                const { value: dates } = await Swal.fire({
-                    title: 'Pilih Rentang', html: '<div class="space-y-3"><input type="date" id="d-start" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-rose-500/10 text-sm bg-slate-50"><input type="date" id="d-end" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-4 focus:ring-rose-500/10 text-sm bg-slate-50"></div>',
-                    preConfirm: () => [document.getElementById('d-start').value, document.getElementById('d-end').value], showCancelButton: true, confirmButtonText: 'Hapus Rentang',
-                    customClass: { confirmButton: 'bg-rose-600 rounded-xl px-6 py-3 font-bold hover:bg-rose-700 w-full sm:w-auto text-white', cancelButton: 'bg-slate-100 rounded-xl px-6 py-3 font-bold hover:bg-slate-200 text-slate-600 w-full sm:w-auto mt-2 sm:mt-0', popup: 'rounded-[2rem] p-4 md:p-6', actions: 'flex-col sm:flex-row w-full mt-4' }
-                });
-                if(dates && dates[0] && dates[1]) {
-                    showLoader(true);
-                    if (IS_PREVIEW) { setTimeout(() => { journalsData = journalsData.filter(j => j.tanggal < dates[0] || j.tanggal > dates[1]); showLoader(false); renderPage('dashboard'); notify('Data dihapus'); }, 1000); } 
-                    else {
-                        try {
-                            const batch = writeBatch(db);
-                            const toDelete = journalsData.filter(j => j.tanggal >= dates[0] && j.tanggal <= dates[1]);
-                            toDelete.forEach(j => batch.delete(doc(db, "journals", String(j.id))));
-                            await batch.commit();
-                            journalsData = journalsData.filter(j => j.tanggal < dates[0] || j.tanggal > dates[1]);
-                            renderPage('dashboard'); notify('Rentang tanggal dihapus');
-                        } catch(e) { notify(e.message, 'error'); }
-                        showLoader(false);
-                    }
-                }
-            } else if (type === 'guru') {
-                const { value: nip } = await Swal.fire({
-                    title: 'Hapus Data Guru', input: 'text', inputPlaceholder: 'Masukkan NIP Guru', showCancelButton: true, confirmButtonText: 'Hapus',
-                    customClass: { input: '!rounded-xl !p-3 !border-slate-200 focus:!border-rose-500 !bg-slate-50 !text-sm !font-medium', confirmButton: 'bg-rose-600 rounded-xl px-6 py-3 font-bold hover:bg-rose-700 text-white w-full sm:w-auto', cancelButton: 'bg-slate-100 rounded-xl px-6 py-3 font-bold hover:bg-slate-200 text-slate-600 w-full sm:w-auto mt-2 sm:mt-0', popup: 'rounded-[2rem] p-4 md:p-6', actions: 'flex-col sm:flex-row w-full mt-4' }
-                });
-                if(nip) {
-                    showLoader(true);
-                    if (IS_PREVIEW) { setTimeout(() => { journalsData = journalsData.filter(j => String(j.nip_user) !== String(nip)); showLoader(false); renderPage('dashboard'); notify('Data guru dihapus'); }, 1000); } 
-                    else {
-                        try {
-                            const batch = writeBatch(db);
-                            const toDelete = journalsData.filter(j => String(j.nip_user) === String(nip));
-                            toDelete.forEach(j => batch.delete(doc(db, "journals", String(j.id))));
-                            await batch.commit();
-                            journalsData = journalsData.filter(j => String(j.nip_user) !== String(nip));
-                            renderPage('dashboard'); notify('Data guru dihapus');
-                        } catch(e) { notify(e.message, 'error'); }
-                        showLoader(false);
-                    }
-                }
-            }
-        }
-
-        function downloadUserTemplate() {
-            const data = [['NIP', 'Nama', 'Password', 'Mapel', 'Role (Admin/Kepsek/Guru)', 'Foto (URL/Base64)']];
-            const ws = XLSX.utils.aoa_to_sheet(data); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Template"); XLSX.writeFile(wb, "Template_User_SIJARI.xlsx");
-        }
-
-        function handleExcelUpload(input) {
-            const file = input.files[0]; if (!file) return;
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                const rows = XLSX.utils.sheet_to_json(XLSX.read(new Uint8Array(e.target.result), {type: 'array'}).Sheets[XLSX.read(new Uint8Array(e.target.result), {type: 'array'}).SheetNames[0]]);
-                const newUsers = rows.map(r => ({ nip: String(r.NIP || r.nip || '').trim(), nama: String(r.Nama || r.nama || '').trim(), password: String(r.Password || r.password || '123456').trim(), mapel: String(r.Mapel || r.mapel || '-').trim(), role: String(r.Role || r.role || 'Guru').trim(), foto: String(r.Foto || r.foto || '').trim() })).filter(u => u.nip && u.nama);
-
-                if(newUsers.length > 0) {
-                    showLoader(true);
-                    if (IS_PREVIEW) { setTimeout(() => { usersData = [...usersData, ...newUsers]; showLoader(false); renderPage('manage-users'); notify(`${newUsers.length} user ditambahkan`); }, 1000); } 
-                    else {
-                        try {
-                            const batch = writeBatch(db);
-                            newUsers.forEach(u => batch.set(doc(db, "users", u.nip), u));
-                            await batch.commit();
-                            
-                            newUsers.forEach(nu => {
-                                const exist = usersData.findIndex(u => u.nip === nu.nip);
-                                if(exist !== -1) usersData[exist] = nu; else usersData.push(nu);
-                            });
-                            showLoader(false); renderPage('manage-users'); notify(`${newUsers.length} user ditambahkan`);
-                        } catch(err) {
-                            showLoader(false); notify(err.message, 'error');
-                        }
-                    }
-                } else { notify('Tidak ada data valid yang ditemukan.', 'warning'); }
-            }; reader.readAsArrayBuffer(file); input.value = ''; 
-        }
-
-        function deleteUser(nip) {
-            Swal.fire({
-                title: 'Hapus User?', text: "Data tidak bisa dikembalikan!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#e11d48', confirmButtonText: 'Ya, Hapus!', cancelButtonText: 'Batal',
-                customClass: { confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-md hover:bg-rose-700 w-full sm:w-auto', cancelButton: 'rounded-xl px-6 py-3 font-bold hover:bg-slate-500 w-full sm:w-auto mt-2 sm:mt-0', popup: 'rounded-[2rem] p-4 md:p-6', actions: 'flex-col sm:flex-row w-full' }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    showLoader(true);
-                    if (IS_PREVIEW) { setTimeout(() => { usersData = usersData.filter(u => String(u.nip) !== String(nip)); showLoader(false); notify('User berhasil dihapus'); renderPage('manage-users'); }, 1000); } 
-                    else {
-                        deleteDoc(doc(db, "users", String(nip))).then(() => {
-                            usersData = usersData.filter(u => String(u.nip) !== String(nip));
-                            showLoader(false); notify('User berhasil dihapus'); renderPage('manage-users');
-                        }).catch(e => {
-                            showLoader(false); notify(e.message, 'error');
-                        });
-                    }
-                }
-            });
-        }
-
-        function handleDeleteAllUsers() {
-            Swal.fire({
-                title: 'Hapus SEMUA User?', text: "Semua user KECUALI akun Anda akan dihapus!", icon: 'error', showCancelButton: true, confirmButtonColor: '#e11d48', confirmButtonText: 'Ya, Hapus Semua!', cancelButtonText: 'Batal',
-                customClass: { confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-md hover:bg-rose-700 w-full sm:w-auto', cancelButton: 'rounded-xl px-6 py-3 font-bold hover:bg-slate-500 w-full sm:w-auto mt-2 sm:mt-0', popup: 'rounded-[2rem] p-4 md:p-6', actions: 'flex-col sm:flex-row w-full' }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    showLoader(true);
-                    if (IS_PREVIEW) { setTimeout(() => { usersData = usersData.filter(u => String(u.nip) === String(currentUser.nip)); showLoader(false); notify('Semua user lain dihapus'); renderPage('manage-users'); }, 1000); } 
-                    else {
-                        try {
-                            const batch = writeBatch(db);
-                            const toDelete = usersData.filter(u => String(u.nip) !== String(currentUser.nip));
-                            toDelete.forEach(u => batch.delete(doc(db, "users", String(u.nip))));
-                            batch.commit().then(() => {
-                                usersData = usersData.filter(u => String(u.nip) === String(currentUser.nip));
-                                showLoader(false); notify('Semua user lain dihapus'); renderPage('manage-users');
-                            });
-                        } catch(e) {
-                            showLoader(false); notify(e.message, 'error');
-                        }
-                    }
-                }
-            });
-        }
-
-        // BIND FUNCTIONS TO WINDOW OBJECT FOR HTML ONCLICK EVENT SUPPORT IN A MODULE
-        window.handleLogin = handleLogin;
-        window.handleLogout = handleLogout;
-        window.resetAndGoToInput = resetAndGoToInput;
-        window.renderPage = renderPage;
-        window.applyFilters = applyFilters;
-        window.resetFilters = resetFilters;
-        window.exportToExcel = exportToExcel;
-        window.editJournalEntry = editJournalEntry;
+        // BINDING
+        window.handleLogin = handleLogin; window.handleLogout = handleLogout; window.renderPage = renderPage;
+        window.resetAndGoToInput = () => { editingJournalData = null; renderPage('input-jurnal'); };
+        window.applyFilters = applyFilters; window.resetFilters = resetFilters; window.exportToExcel = exportToExcel;
+        window.editJournalEntry = (id) => { editingJournalData = journalsData.find(j=>j.id===id); renderPage('input-jurnal'); };
         window.deleteIndividualJournal = deleteIndividualJournal;
-        window.previewImage = previewImage;
-        window.handleKelasChange = handleKelasChange;
-        window.previewSelectedFoto = previewSelectedFoto;
-        window.submitJurnal = submitJurnal;
-        window.showUserForm = showUserForm;
-        window.previewSwalFoto = previewSwalFoto;
-        window.updateProfile = updateProfile;
-        window.previewProfilePhoto = previewProfilePhoto;
-        window.handlePrintDialog = handlePrintDialog;
-        window.handleBulkDelete = handleBulkDelete;
-        window.downloadUserTemplate = downloadUserTemplate;
-        window.handleExcelUpload = handleExcelUpload;
-        window.deleteUser = deleteUser;
-        window.handleDeleteAllUsers = handleDeleteAllUsers;
+        window.submitJurnal = submitJurnal; window.handlePrintDialog = handlePrintDialog;
+        window.showUserForm = showUserForm; window.previewProfilePhoto = previewProfilePhoto; window.updateProfile = updateProfile;
+        window.handleBulkDelete = handleBulkDelete; window.downloadUserTemplate = downloadUserTemplate;
+        window.handleExcelUpload = handleExcelUpload; window.deleteUser = deleteUser; window.handleDeleteAllUsers = handleDeleteAllUsers;
 
     </script>
 </body>
